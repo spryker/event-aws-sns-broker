@@ -23,9 +23,8 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      */
     public function getAwsSnsEventBusNames(): array
     {
-        $busses = [];
-        // get names  from config array
+        $busses = $this->get('blabla', [static::EVENT_AWS_SNS_BUS_NAMES => ['test_topicName']]);
 
-        return $busses[static::EVENT_AWS_SNS_BUS_NAMES];
+        return $busses[static::EVENT_AWS_SNS_BUS_NAMES] ?? [];
     }
 }

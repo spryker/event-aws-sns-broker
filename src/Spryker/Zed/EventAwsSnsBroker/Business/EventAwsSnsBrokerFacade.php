@@ -26,6 +26,9 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      */
     public function createTopics(array $eventBusNames): void
     {
+        $this->getFactory()
+            ->createTopicCreator()
+            ->createTopics($eventBusNames);
     }
 
     /**

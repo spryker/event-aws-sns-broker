@@ -7,6 +7,10 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
+use Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\AwsSnsApiClient;
+use Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreator;
+use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -22,9 +26,27 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return void
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface
      */
-    public function createAwsSnsApiClient()
+    public function createTopicCreator(): TopicCreatorInterface
     {
+        return new TopicCreator($this->createApiClient());
+    }
+
+    /**
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface
+     */
+    public function createApiClient(): EventAwsSnsApiClientInterface
+    {
+        // todo::pass config of credentials
+        return new AwsSnsApiClient();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getBusNames(): array
+    {
+        return $this->getConfig()->getAwsSnsEventBusNames();
     }
 }
