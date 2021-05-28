@@ -43,6 +43,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      */
     public function createTopic(string $topicName): string
     {
+        // todo
         try {
             $result = $this->awsSnsClient->createTopic([
                 'Name' => $topicName,
@@ -67,6 +68,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      */
     public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string
     {
+        // todo
         try {
             $result = $this->awsSnsClient->subscribe([
                 'Protocol' => $protocol,
@@ -92,6 +94,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      */
     public function publishEvent(string $topicArn, string $message): string
     {
+        // todo
         $messageBody = [
             'Message' => $message,
             'TopicArn' => $topicArn,
@@ -100,7 +103,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
             $result = $this->awsSnsClient->publish($messageBody);
             var_dump($result);
 
-            return $result['Id'];
+            return $result['MessageId'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
 

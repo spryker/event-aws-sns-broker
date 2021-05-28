@@ -58,5 +58,8 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      */
     public function publishEvents(EventCollectionTransfer $eventCollectionTransfer): void
     {
+        $this->getFactory()
+            ->createEventPublisher()
+            ->publishEvents($eventCollectionTransfer);
     }
 }

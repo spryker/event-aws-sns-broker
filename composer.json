@@ -1,13 +1,13 @@
 {
-    "name": "spryker/event",
+    "name": "spryker/event-aws-sns-broker",
     "type": "library",
-    "description": "Event module",
+    "description": "EventAwsSnsBroker module",
     "license": "proprietary",
     "require": {
+        "aws/aws-sdk-php": "^3.20.0",
         "php": ">=7.3",
         "spryker/event-extension": "^1.0.0",
-        "spryker/kernel": "^3.30.0",
-        "async-aws/sns": "^1.2.0"
+        "spryker/kernel": "^3.30.0"
     },
     "require-dev": {
         "spryker/code-sniffer": "*",
