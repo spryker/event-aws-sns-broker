@@ -16,6 +16,8 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      * Specification:
      * - Returns array of configurations for SNS API client.
      *
+     * @api
+     *
      * @return string[]
      */
     public function getAwsSnsApiClientConfiguration(): array

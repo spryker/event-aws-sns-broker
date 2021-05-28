@@ -39,7 +39,7 @@ class EventAwsSnsBrokerCreateSubscribersConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->getFacade()->registerSubscribers($this->getFactory()->getBusNames());
+        $this->getFacade()->createSubscribers($this->getFactory()->getConfig()->getAwsSnsEventBusNames());
 
         return static::CODE_SUCCESS;
     }

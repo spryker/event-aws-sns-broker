@@ -41,7 +41,7 @@ class EventAwsSnsBrokerClient extends AbstractClient implements EventAwsSnsBroke
      */
     public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): string
     {
-        return $this->getFactory()->createApiClient()->registerSubscriber($topicArn, $endpoint, $protocol);
+        return $this->getFactory()->createApiClient()->createSubscriber($topicArn, $endpoint, $protocol);
     }
 
     /**

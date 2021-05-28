@@ -23,7 +23,7 @@ interface AwsSnsApiClientInterface
      *
      * @return string
      */
-    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): string;
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string;
 
     /**
      * @param string $topicArn

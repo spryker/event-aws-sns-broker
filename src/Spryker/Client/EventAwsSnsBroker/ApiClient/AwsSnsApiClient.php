@@ -14,7 +14,7 @@ use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
     /**
-     * @var SnsClient
+     * @var \Aws\Sns\SnsClient
      */
     protected $awsSnsClient;
 
@@ -53,6 +53,8 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
             return $result['TopicArn'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
+
+            throw $e;
         }
     }
 
@@ -63,7 +65,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      *
      * @return string
      */
-    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): string
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string
     {
         try {
             $result = $this->awsSnsClient->subscribe([
@@ -74,9 +76,11 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
             ]);
             var_dump($result);
 
-            return $result['SubscriberArn'];
+            return $result['SubscriptionArn'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
+
+            throw $e;
         }
     }
 
@@ -99,6 +103,8 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
             return $result['Id'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
+
+            throw $e;
         }
     }
 }

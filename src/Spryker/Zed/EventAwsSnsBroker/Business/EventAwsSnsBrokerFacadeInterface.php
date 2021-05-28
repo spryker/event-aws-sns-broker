@@ -27,6 +27,7 @@ interface EventAwsSnsBrokerFacadeInterface
      * Specification:
      * - Calls the AWS SNS client's method to register subscribers with event busses' names.
      * - Subscriber - this is action of the handler controller that receive events from the AWS SNS broker.
+     * - Saves subscriberArn into BD.
      *
      * @api
      *
@@ -34,7 +35,7 @@ interface EventAwsSnsBrokerFacadeInterface
      *
      * @return void
      */
-    public function registerSubscribers(array $eventBusNames): void;
+    public function createSubscribers(array $eventBusNames): void;
 
     /**
      * Specification:

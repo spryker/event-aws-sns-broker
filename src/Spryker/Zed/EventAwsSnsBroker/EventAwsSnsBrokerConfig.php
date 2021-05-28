@@ -7,12 +7,11 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker;
 
+use Spryker\Shared\EventAwsSnsBroker\EventAwsSnsBrokerConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class EventAwsSnsBrokerConfig extends AbstractBundleConfig
 {
-    public const EVENT_AWS_SNS_BUS_NAMES = 'EVENT_AWS_SNS_BUS_NAMES';
-
     /**
      * Specification:
      * - Returns list of event bus names registered in config files.
@@ -23,8 +22,6 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      */
     public function getAwsSnsEventBusNames(): array
     {
-        $busses = $this->get('blabla', [static::EVENT_AWS_SNS_BUS_NAMES => ['test_topicName']]);
-
-        return $busses[static::EVENT_AWS_SNS_BUS_NAMES] ?? [];
+        return $this->get(EventAwsSnsBrokerConstants::AWS_SNS_BUS_NAMES, []);
     }
 }

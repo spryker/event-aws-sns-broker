@@ -8,6 +8,8 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreator;
+use Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
@@ -34,18 +36,18 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreatorInterface
+     */
+    public function createSubscriberCreator(): SubscriberCreatorInterface
+    {
+        return new SubscriberCreator($this->getEventAwsSnsBrokerClient());
+    }
+
+    /**
      * @return \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface
      */
     public function getEventAwsSnsBrokerClient(): EventAwsSnsBrokerClientInterface
     {
         return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getBusNames(): array
-    {
-        return $this->getConfig()->getAwsSnsEventBusNames();
     }
 }

@@ -59,4 +59,6 @@ interface EventAwsSnsBrokerConstants
      * @api
      */
     public const AWS_SNS_VERSION = 'EVENT_AWS_SNS_BROKER:AWS_SNS_VERSION';
+
+    public const AWS_SNS_BUS_NAMES = 'EVENT_AWS_SNS_BROKER:AWS_SNS_BUS_NAMES';
 }
