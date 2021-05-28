@@ -5,9 +5,9 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\ApiClient;
+namespace Spryker\Client\EventAwsSnsBroker\ApiClient;
 
-interface EventAwsSnsApiClientInterface
+interface AwsSnsApiClientInterface
 {
     /**
      * @param string $topicName

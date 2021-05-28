@@ -7,21 +7,21 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator;
 
-use Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface;
+use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 
 class TopicCreator implements TopicCreatorInterface
 {
     /**
-     * @var \Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface
+     * @var \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface
      */
-    protected $eventAwsSnsBrokerApiClient;
+    protected $eventAwsSnsBrokerClient;
 
     /**
-     * @param \Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface $eventAwsSnsBrokerApiClient
+     * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient
      */
-    public function __construct(EventAwsSnsApiClientInterface $eventAwsSnsBrokerApiClient)
+    public function __construct(EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient)
     {
-        $this->eventAwsSnsBrokerApiClient = $eventAwsSnsBrokerApiClient;
+        $this->eventAwsSnsBrokerClient = $eventAwsSnsBrokerClient;
     }
 
     /**
@@ -32,7 +32,7 @@ class TopicCreator implements TopicCreatorInterface
     public function createTopics(array $eventBusNames): void
     {
         foreach ($eventBusNames as $eventBusName) {
-            $topicArn = $this->eventAwsSnsBrokerApiClient->createTopic($eventBusName);
+            $topicArn = $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
             // todo::save $topicArn into BD
         }
     }

@@ -5,28 +5,34 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\ApiClient;
+namespace Spryker\Client\EventAwsSnsBroker\ApiClient;
 
 use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
+use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
-class AwsSnsApiClient implements EventAwsSnsApiClientInterface
+class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
     /**
      * @var SnsClient
      */
     protected $awsSnsClient;
 
-    public function __construct()
+    /**
+     * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig $config
+     */
+    public function __construct(EventAwsSnsBrokerConfig $config)
     {
+        $snsConfig = $config->getAwsSnsApiClientConfiguration();
+
         $this->awsSnsClient = new SnsClient([
             'credentials' => [
-                'key' => 'test',
-                'secret' => 'test',
+                'key' => $snsConfig['access_key'],
+                'secret' => $snsConfig['access_secret'],
             ],
-            'endpoint' => 'http://localhost.localstack.cloud:4566',
-            'region' => 'eu-central-1',
-            'version' => '2010-03-31'
+            'endpoint' => $snsConfig['endpoint'],
+            'region' => $snsConfig['region'],
+            'version' => $snsConfig['version'],
         ]);
     }
 
@@ -43,11 +49,11 @@ class AwsSnsApiClient implements EventAwsSnsApiClientInterface
             ]);
 
             var_dump($result);
+
+            return $result['TopicArn'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
         }
-
-        return $result['TopicArn'];
     }
 
     /**
@@ -67,6 +73,8 @@ class AwsSnsApiClient implements EventAwsSnsApiClientInterface
                 'TopicArn' => $topicArn,
             ]);
             var_dump($result);
+
+            return $result['SubscriberArn'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
         }
@@ -87,6 +95,8 @@ class AwsSnsApiClient implements EventAwsSnsApiClientInterface
         try {
             $result = $this->awsSnsClient->publish($messageBody);
             var_dump($result);
+
+            return $result['Id'];
         } catch (AwsException $e) {
             var_dump($e->getMessage());
         }

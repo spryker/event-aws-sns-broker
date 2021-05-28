@@ -7,10 +7,10 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
-use Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\AwsSnsApiClient;
-use Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface;
+use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface;
+use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
@@ -30,16 +30,15 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function createTopicCreator(): TopicCreatorInterface
     {
-        return new TopicCreator($this->createApiClient());
+        return new TopicCreator($this->getEventAwsSnsBrokerClient());
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\ApiClient\EventAwsSnsApiClientInterface
+     * @return \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface
      */
-    public function createApiClient(): EventAwsSnsApiClientInterface
+    public function getEventAwsSnsBrokerClient(): EventAwsSnsBrokerClientInterface
     {
-        // todo::pass config of credentials
-        return new AwsSnsApiClient();
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER);
     }
 
     /**
