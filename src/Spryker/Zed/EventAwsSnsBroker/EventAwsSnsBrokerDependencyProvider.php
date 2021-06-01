@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker;
 
+use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeBridge;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
@@ -16,6 +17,7 @@ use Spryker\Zed\Kernel\Container;
 class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvider
 {
     public const CLIENT_EVENT_AWS_SNS_BROKER = 'CLIENT_EVENT_AWS_SNS_BROKER';
+    public const EVENT_FACADE = 'EVENT_FACADE';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -25,6 +27,7 @@ class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvid
     public function provideBusinessLayerDependencies(Container $container): Container
     {
         $container = $this->addEventAwsSnsBrokerClient($container);
+        $container = $this->addEventFacade($container);
 
         return $container;
     }
@@ -38,6 +41,20 @@ class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvid
     {
         $container->set(static::CLIENT_EVENT_AWS_SNS_BROKER, function (Container $container) {
             return $container->getLocator()->eventAwsSnsBroker()->client();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addEventFacade(Container $container): Container
+    {
+        $container->set(static::EVENT_FACADE, function (Container $container) {
+            return new EventAwsSnsBrokerToEventFacadeBridge($container->getLocator()->event()->facade());
         });
 
         return $container;

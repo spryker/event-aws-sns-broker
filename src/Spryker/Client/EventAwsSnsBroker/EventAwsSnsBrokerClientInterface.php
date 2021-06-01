@@ -17,9 +17,9 @@ interface EventAwsSnsBrokerClientInterface
      *
      * @param string $topicName
      *
-     * @return string
+     * @return string|null
      */
-    public function createTopic(string $topicName): string;
+    public function createTopic(string $topicName): ?string;
 
     /**
      * Specification:
@@ -31,9 +31,9 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $endpoint
      * @param string $protocol
      *
-     * @return string
+     * @return string|null
      */
-    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): string;
+    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): ?string;
 
     /**
      * Specification:
@@ -44,7 +44,7 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $topicArn
      * @param string $message
      *
-     * @return string
+     * @return string|null
      */
-    public function publishEvent(string $topicArn, string $message): string;
+    public function publishEvent(string $topicArn, string $message): ?string;
 }

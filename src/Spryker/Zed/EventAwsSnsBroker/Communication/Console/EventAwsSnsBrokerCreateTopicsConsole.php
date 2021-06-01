@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @method \Spryker\Zed\EventAwsSnsBroker\Business\EventAwsSnsBrokerFacadeInterface getFacade()
+ * @method \Spryker\Zed\EventAwsSnsBroker\Communication\EventAwsSnsBrokerCommunicationFactory getFactory()
  */
 class EventAwsSnsBrokerCreateTopicsConsole extends Console
 {
@@ -38,8 +39,7 @@ class EventAwsSnsBrokerCreateTopicsConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // TODO::replace array with cinfig
-        $this->getFacade()->createTopics(['testHardCOdeddNmae12312']);
+        $this->getFacade()->createTopics($this->getFactory()->getConfig()->getAwsSnsTopicArnMappedWithEventBusNames());
 
         return static::CODE_SUCCESS;
     }

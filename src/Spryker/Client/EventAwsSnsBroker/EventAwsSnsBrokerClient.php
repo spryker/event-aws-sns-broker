@@ -21,9 +21,9 @@ class EventAwsSnsBrokerClient extends AbstractClient implements EventAwsSnsBroke
      *
      * @param string $topicName
      *
-     * @return string
+     * @return string|null
      */
-    public function createTopic(string $topicName): string
+    public function createTopic(string $topicName): ?string
     {
         return $this->getFactory()->createApiClient()->createTopic($topicName);
     }
@@ -37,9 +37,9 @@ class EventAwsSnsBrokerClient extends AbstractClient implements EventAwsSnsBroke
      * @param string $endpoint
      * @param string $protocol
      *
-     * @return string
+     * @return string|null
      */
-    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): string
+    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): ?string
     {
         return $this->getFactory()->createApiClient()->createSubscriber($topicArn, $endpoint, $protocol);
     }
@@ -52,9 +52,9 @@ class EventAwsSnsBrokerClient extends AbstractClient implements EventAwsSnsBroke
      * @param string $topicArn
      * @param string $message
      *
-     * @return string
+     * @return string|null
      */
-    public function publishEvent(string $topicArn, string $message): string
+    public function publishEvent(string $topicArn, string $message): ?string
     {
         return $this->getFactory()->createApiClient()->publishEvent($topicArn, $message);
     }

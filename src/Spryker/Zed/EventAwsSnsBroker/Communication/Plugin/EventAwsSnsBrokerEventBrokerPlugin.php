@@ -13,6 +13,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
  * @method \Spryker\Zed\EventAwsSnsBroker\Business\EventAwsSnsBrokerFacadeInterface getFacade()
+ * @method \Spryker\Zed\EventAwsSnsBroker\Business\EventAwsSnsBrokerBusinessFactory getFactory()
  * @method \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig getConfig()
  */
 class EventAwsSnsBrokerEventBrokerPlugin extends AbstractPlugin implements EventBrokerPluginInterface
@@ -44,6 +45,6 @@ class EventAwsSnsBrokerEventBrokerPlugin extends AbstractPlugin implements Event
      */
     public function isApplicable(string $eventBusName): bool
     {
-        return in_array($eventBusName, $this->getConfig()->getAwsSnsEventBusNames(), true);
+        return in_array($eventBusName, $this->getConfig()->getAwsSnsTopicArnMappedWithEventBusNames(), true);
     }
 }

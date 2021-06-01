@@ -8,6 +8,8 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Zed\EventAwsSnsBroker\Communication\Controller\EventHandleController;
+use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class SubscriberCreator implements SubscriberCreatorInterface
 {
@@ -17,11 +19,20 @@ class SubscriberCreator implements SubscriberCreatorInterface
     protected $eventAwsSnsBrokerClient;
 
     /**
-     * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient
+     * @var \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig
      */
-    public function __construct(EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient)
-    {
+    protected $eventAwsSnsBrokerConfig;
+
+    /**
+     * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient
+     * @param \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
+     */
+    public function __construct(
+        EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient,
+        EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
+    ) {
         $this->eventAwsSnsBrokerClient = $eventAwsSnsBrokerClient;
+        $this->eventAwsSnsBrokerConfig = $eventAwsSnsBrokerConfig;
     }
 
     /**
@@ -31,27 +42,15 @@ class SubscriberCreator implements SubscriberCreatorInterface
      */
     public function createSubscribers(array $eventBusNames): void
     {
-        foreach ($eventBusNames as $eventBusName) {
-            $topicArn = $this->getTopicArnByEventBusName($eventBusName);
+        foreach ($eventBusNames as $eventBusName => $topicArn) {
             $endpoint = $this->getSubscriberEndpointByBusName($eventBusName);
-            // todo::get $protocol from config
-            $protocol = 'http';
 
-            $subscriberArn = $this->eventAwsSnsBrokerClient->registerSubscriber($topicArn, $endpoint, $protocol);
-
-            $this->saveSubscriberArn($topicArn, $eventBusName, $subscriberArn);
+            $this->eventAwsSnsBrokerClient->registerSubscriber(
+                $topicArn,
+                $endpoint,
+                $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
+            );
         }
-    }
-
-    /**
-     * @param string $eventBusName
-     *
-     * @return string
-     */
-    protected function getTopicArnByEventBusName(string $eventBusName): string
-    {
-        // todo::get $topicArn somewhere
-        return 'arn:aws:sns:eu-central-1:000000000000:testHardCOdeddNmae12312';
     }
 
     /**
@@ -61,19 +60,12 @@ class SubscriberCreator implements SubscriberCreatorInterface
      */
     protected function getSubscriberEndpointByBusName(string $eventBusName): string
     {
-        // todo::generate $endpoint from ControllerHAndler action
-        return 'http://zed.de.spryker.local/event-aws-sns-broker/handle-event/' . $eventBusName;
-    }
-
-    /**
-     * @param string $eventBusName
-     * @param string $topicArn
-     * @param string $subscriberArn
-     *
-     * @return void
-     */
-    protected function saveSubscriberArn(string $eventBusName, string $topicArn, string $subscriberArn): void
-    {
-        // todo::save $subscriberArn into BD
+        return sprintf(
+            '%s/%s?%s=%s',
+            $this->eventAwsSnsBrokerConfig->getZedRequestBaseUrl(),
+            'event-aws-sns-broker/event-handle',
+            EventHandleController::QUERY_PARAM_EVENT_BUS_NAME,
+            $eventBusName
+        );
     }
 }

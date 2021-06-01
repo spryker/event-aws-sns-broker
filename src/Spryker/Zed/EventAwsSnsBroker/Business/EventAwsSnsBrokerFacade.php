@@ -36,15 +36,15 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      *
      * @api
      *
-     * @param string[] $eventBusNames
+     * @param string[] $topicArnsWithEventBusNames
      *
      * @return void
      */
-    public function createSubscribers(array $eventBusNames): void
+    public function createSubscribers(array $topicArnsWithEventBusNames): void
     {
         $this->getFactory()
             ->createSubscriberCreator()
-            ->createSubscribers($eventBusNames);
+            ->createSubscribers($topicArnsWithEventBusNames);
     }
 
     /**
@@ -61,5 +61,40 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
         $this->getFactory()
             ->createEventPublisher()
             ->publishEvents($eventCollectionTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $eventMessage
+     * @param string $eventBusName
+     *
+     * @return void
+     */
+    public function handleEvent(string $eventMessage, string $eventBusName): void
+    {
+        $this->getFactory()
+            ->createEventHandler()
+            ->handleEvent($eventMessage, $eventBusName);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param mixed[] $requestBody
+     * @param mixed[] $requestHeaders
+     * @param string $eventBusName
+     *
+     * @return bool
+     */
+    public function isEventNotificationCorrect(array $requestBody, array $requestHeaders, string $eventBusName): bool
+    {
+        return $this->getFactory()
+            ->createEventNotificationChecker()
+            ->isEventNotificationCorrect($requestBody, $requestHeaders, $eventBusName);
     }
 }

@@ -27,15 +27,14 @@ interface EventAwsSnsBrokerFacadeInterface
      * Specification:
      * - Calls the AWS SNS client's method to register subscribers with event busses' names.
      * - Subscriber - this is action of the handler controller that receive events from the AWS SNS broker.
-     * - Saves subscriberArn into BD.
      *
      * @api
      *
-     * @param string[] $eventBusNames
+     * @param string[] $topicArnsWithEventBusNames
      *
      * @return void
      */
-    public function createSubscribers(array $eventBusNames): void;
+    public function createSubscribers(array $topicArnsWithEventBusNames): void;
 
     /**
      * Specification:
@@ -48,4 +47,31 @@ interface EventAwsSnsBrokerFacadeInterface
      * @return void
      */
     public function publishEvents(EventCollectionTransfer $eventCollectionTransfer): void;
+
+    /**
+     * Specification:
+     * - Handles an received event from AWS SNS through HTTP(S).
+     *
+     * @api
+     *
+     * @param string $eventMessage
+     * @param string $eventBusName
+     *
+     * @return void
+     */
+    public function handleEvent(string $eventMessage, string $eventBusName): void;
+
+    /**
+     * Specification:
+     * - Checks request's data to be sure request is correct and contains needed and allowed data.
+     *
+     * @api
+     *
+     * @param mixed[] $requestBody
+     * @param mixed[] $requestHeaders
+     * @param string $eventBusName
+     *
+     * @return bool
+     */
+    public function isEventNotificationCorrect(array $requestBody, array $requestHeaders, string $eventBusName): bool;
 }

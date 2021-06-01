@@ -9,7 +9,10 @@ namespace Spryker\Client\EventAwsSnsBroker\ApiClient;
 
 use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
+use Exception;
+use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
+use Spryker\Shared\ErrorHandler\ErrorLogger;
 
 class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
@@ -39,24 +42,31 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
     /**
      * @param string $topicName
      *
-     * @return string
+     * @throws \RuntimeException
+     *
+     * @return string|null
      */
-    public function createTopic(string $topicName): string
+    public function createTopic(string $topicName): ?string
     {
-        // todo
         try {
-            $result = $this->awsSnsClient->createTopic([
+            $topicBody = [
                 'Name' => $topicName,
-            ]);
+            ];
 
-            var_dump($result);
+            $result = $this->awsSnsClient->createTopic($topicBody);
+
+            if (isset($result['TopicArn'])) {
+                throw new RuntimeException('The response of the "createTopic" request doesn\'t contain the "TopicArn" key.');
+            }
 
             return $result['TopicArn'];
-        } catch (AwsException $e) {
-            var_dump($e->getMessage());
-
-            throw $e;
+        } catch (AwsException $exception) {
+        } catch (RuntimeException $exception) {
         }
+
+        $this->logException($exception);
+
+        return null;
     }
 
     /**
@@ -64,50 +74,74 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      * @param string $endpoint
      * @param string $protocol
      *
-     * @return string
+     * @throws \RuntimeException
+     *
+     * @return string|null
      */
-    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): ?string
     {
-        // todo
         try {
-            $result = $this->awsSnsClient->subscribe([
+            $subscriptionBody = [
                 'Protocol' => $protocol,
                 'Endpoint' => $endpoint,
                 'ReturnSubscriptionArn' => true,
                 'TopicArn' => $topicArn,
-            ]);
-            var_dump($result);
+            ];
+
+            $result = $this->awsSnsClient->subscribe($subscriptionBody);
+
+            if (isset($result['SubscriptionArn'])) {
+                throw new RuntimeException('The response of the "subscribe" request doesn\'t contain the "SubscriptionArn" key.');
+            }
 
             return $result['SubscriptionArn'];
-        } catch (AwsException $e) {
-            var_dump($e->getMessage());
-
-            throw $e;
+        } catch (AwsException $exception) {
+        } catch (RuntimeException $exception) {
         }
+
+        $this->logException($exception);
+
+        return null;
     }
 
     /**
      * @param string $topicArn
      * @param string $message
      *
-     * @return string
+     * @throws \RuntimeException
+     *
+     * @return string|null
      */
-    public function publishEvent(string $topicArn, string $message): string
+    public function publishEvent(string $topicArn, string $message): ?string
     {
-        // todo
-        $messageBody = [
-            'Message' => $message,
-            'TopicArn' => $topicArn,
-        ];
         try {
+            $messageBody = [
+                'Message' => $message,
+                'TopicArn' => $topicArn,
+            ];
             $result = $this->awsSnsClient->publish($messageBody);
-            var_dump($result);
+
+            if (isset($result['MessageId'])) {
+                throw new RuntimeException('The response of the "publish" request doesn\'t contain the "MessageId" key.');
+            }
 
             return $result['MessageId'];
-        } catch (AwsException $e) {
-            var_dump($e->getMessage());
-
-            throw $e;
+        } catch (AwsException $exception) {
+        } catch (RuntimeException $exception) {
         }
+
+        $this->logException($exception);
+
+        return null;
+    }
+
+    /**
+     * @param \Exception $exception
+     *
+     * @return void
+     */
+    protected function logException(Exception $exception): void
+    {
+        ErrorLogger::getInstance()->log($exception);
     }
 }

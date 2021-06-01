@@ -8,8 +8,11 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
+use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Shared\ErrorHandler\ErrorLogger;
 use Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface;
+use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class EventPublisher implements EventPublisherInterface
 {
@@ -24,15 +27,23 @@ class EventPublisher implements EventPublisherInterface
     protected $eventTransferTransformer;
 
     /**
+     * @var \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig
+     */
+    protected $eventAwsSnsBrokerConfig;
+
+    /**
      * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient
      * @param \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface $eventTransferTransformer
+     * @param \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
      */
     public function __construct(
         EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient,
-        EventTransferTransformerInterface $eventTransferTransformer
+        EventTransferTransformerInterface $eventTransferTransformer,
+        EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
     ) {
         $this->eventAwsSnsBrokerClient = $eventAwsSnsBrokerClient;
         $this->eventTransferTransformer = $eventTransferTransformer;
+        $this->eventAwsSnsBrokerConfig = $eventAwsSnsBrokerConfig;
     }
 
     /**
@@ -44,24 +55,31 @@ class EventPublisher implements EventPublisherInterface
     {
         $topicArn = $this->getTopicArnByEventBusName($eventCollectionTransfer->getEventBusNameOrFail());
 
+        if (!$topicArn) {
+            $exception = new RuntimeException('Requested event bus is not configured.');
+            ErrorLogger::getInstance()->log($exception);
+
+            return;
+        }
+
         foreach ($eventCollectionTransfer->getEvents() as $eventTransfer) {
-            $eventId = $this->eventAwsSnsBrokerClient
+            $this->eventAwsSnsBrokerClient
                 ->publishEvent(
                     $topicArn,
                     $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer)
                 );
-            // todo:: do we need to do something with eventId.
         }
     }
 
     /**
      * @param string $eventBusName
      *
-     * @return string
+     * @return string|null
      */
-    protected function getTopicArnByEventBusName(string $eventBusName): string
+    protected function getTopicArnByEventBusName(string $eventBusName): ?string
     {
-        // todo::get $topicArn somewhere
-        return 'arn:aws:sns:eu-central-1:000000000000:testHardCOdeddNmae12312';
+        $map = $this->eventAwsSnsBrokerConfig->getAwsSnsTopicArnMappedWithEventBusNames();
+
+        return $map[$eventBusName] ?? null;
     }
 }

@@ -19,9 +19,9 @@ interface EventTransferTransformerInterface
     public function transformEventTransferIntoMessage(EventTransfer $eventTransfer): string;
 
     /**
-     * @param string $message
+     * @param string $eventMessage
      *
      * @return \Generated\Shared\Transfer\EventTransfer
      */
-    public function transformMessageIntoEventTransfer(string $message): EventTransfer;
+    public function transformMessageIntoEventTransfer(string $eventMessage): EventTransfer;
 }

@@ -32,8 +32,7 @@ class TopicCreator implements TopicCreatorInterface
     public function createTopics(array $eventBusNames): void
     {
         foreach ($eventBusNames as $eventBusName) {
-            $topicArn = $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
-            // todo::save $topicArn into BD
+            $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
         }
     }
 }

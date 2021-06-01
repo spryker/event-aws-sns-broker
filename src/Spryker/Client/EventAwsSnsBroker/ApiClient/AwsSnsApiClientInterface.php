@@ -12,24 +12,24 @@ interface AwsSnsApiClientInterface
     /**
      * @param string $topicName
      *
-     * @return string
+     * @return string|null
      */
-    public function createTopic(string $topicName): string;
+    public function createTopic(string $topicName): ?string;
 
     /**
      * @param string $topicArn
      * @param string $endpoint
      * @param string $protocol
      *
-     * @return string
+     * @return string|null
      */
-    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string;
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): ?string;
 
     /**
      * @param string $topicArn
      * @param string $message
      *
-     * @return string
+     * @return string|null
      */
-    public function publishEvent(string $topicArn, string $message): string;
+    public function publishEvent(string $topicArn, string $message): ?string;
 }

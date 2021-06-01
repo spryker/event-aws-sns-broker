@@ -60,5 +60,11 @@ interface EventAwsSnsBrokerConstants
      */
     public const AWS_SNS_VERSION = 'EVENT_AWS_SNS_BROKER:AWS_SNS_VERSION';
 
-    public const AWS_SNS_BUS_NAMES = 'EVENT_AWS_SNS_BROKER:AWS_SNS_BUS_NAMES';
+    /**
+     * Specification:
+     * - Contains AWS SNS topic ARNs mapped with event bus name.
+     *
+     * @api
+     */
+    public const AWS_SNS_BUS_NAMES_TOPIC_ARN = 'EVENT_AWS_SNS_BROKER:AWS_SNS_BUS_NAMES_TOPIC_ARN';
 }
