@@ -40,7 +40,9 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
     {
         $topicNameEventBusNameMap = $this->get(EventAwsSnsBrokerConstants::AWS_SNS_BUS_NAMES_TOPIC_ARN, []);
 
-        return array_keys($topicNameEventBusNameMap);
+        return array_filter(array_keys($topicNameEventBusNameMap), function ($key): bool {
+            return is_string($key);
+        });
     }
 
     /**
