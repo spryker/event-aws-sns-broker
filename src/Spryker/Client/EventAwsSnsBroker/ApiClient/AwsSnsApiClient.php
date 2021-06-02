@@ -55,7 +55,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
 
             $result = $this->awsSnsClient->createTopic($topicBody);
 
-            if (isset($result['TopicArn'])) {
+            if (!isset($result['TopicArn'])) {
                 throw new RuntimeException('The response of the "createTopic" request doesn\'t contain the "TopicArn" key.');
             }
 
@@ -90,7 +90,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
 
             $result = $this->awsSnsClient->subscribe($subscriptionBody);
 
-            if (isset($result['SubscriptionArn'])) {
+            if (!isset($result['SubscriptionArn'])) {
                 throw new RuntimeException('The response of the "subscribe" request doesn\'t contain the "SubscriptionArn" key.');
             }
 
@@ -121,7 +121,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
             ];
             $result = $this->awsSnsClient->publish($messageBody);
 
-            if (isset($result['MessageId'])) {
+            if (!isset($result['MessageId'])) {
                 throw new RuntimeException('The response of the "publish" request doesn\'t contain the "MessageId" key.');
             }
 

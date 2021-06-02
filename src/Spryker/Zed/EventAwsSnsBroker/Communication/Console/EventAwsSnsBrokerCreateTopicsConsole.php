@@ -39,7 +39,7 @@ class EventAwsSnsBrokerCreateTopicsConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->getFacade()->createTopics($this->getFactory()->getConfig()->getAwsSnsTopicArnMappedWithEventBusNames());
+        $this->getFacade()->createTopics($this->getFactory()->getConfig()->getAwsSnsEventBusNames());
 
         return static::CODE_SUCCESS;
     }
