@@ -7,8 +7,8 @@
 
 namespace Spryker\Client\EventAwsSnsBroker;
 
+use Spryker\Client\Kernel\AbstractBundleConfig;
 use Spryker\Shared\EventAwsSnsBroker\EventAwsSnsBrokerConstants;
-use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class EventAwsSnsBrokerConfig extends AbstractBundleConfig
 {
@@ -25,8 +25,8 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
         $configs = $this->get(EventAwsSnsBrokerConstants::EVENT_AWS_SNS_BROKER_CONFIG);
 
         return [
-            'access_key' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_KEY],
-            'access_secret' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_SECRET],
+            'accessKey' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_KEY],
+            'accessSecret' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_SECRET],
             'region' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_REGION],
             'endpoint' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ENDPOINT],
             'version' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_VERSION],

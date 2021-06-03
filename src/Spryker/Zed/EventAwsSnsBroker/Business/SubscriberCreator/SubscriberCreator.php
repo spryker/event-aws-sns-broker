@@ -36,16 +36,16 @@ class SubscriberCreator implements SubscriberCreatorInterface
     }
 
     /**
-     * @param string[] $eventBusNames
+     * @param string[] $eventBusNameTopicArnMap
      *
      * @return void
      */
-    public function createSubscribers(array $eventBusNames): void
+    public function createSubscribers(array $eventBusNameTopicArnMap): void
     {
-        foreach ($eventBusNames as $eventBusName => $topicArn) {
+        foreach ($eventBusNameTopicArnMap as $eventBusName => $topicArn) {
             $endpoint = $this->getSubscriberEndpointByBusName($eventBusName);
 
-            $this->eventAwsSnsBrokerClient->registerSubscriber(
+            $this->eventAwsSnsBrokerClient->createSubscriber(
                 $topicArn,
                 $endpoint,
                 $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()

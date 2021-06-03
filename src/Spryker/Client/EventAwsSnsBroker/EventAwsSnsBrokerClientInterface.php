@@ -33,7 +33,7 @@ interface EventAwsSnsBrokerClientInterface
      *
      * @return string|null
      */
-    public function registerSubscriber(string $topicArn, string $endpoint, string $protocol): ?string;
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): ?string;
 
     /**
      * Specification:

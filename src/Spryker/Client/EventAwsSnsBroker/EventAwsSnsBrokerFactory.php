@@ -7,6 +7,7 @@
 
 namespace Spryker\Client\EventAwsSnsBroker;
 
+use Aws\Sns\SnsClient;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClient;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClientInterface;
 use Spryker\Client\Kernel\AbstractFactory;
@@ -21,6 +22,26 @@ class EventAwsSnsBrokerFactory extends AbstractFactory
      */
     public function createApiClient(): AwsSnsApiClientInterface
     {
-        return new AwsSnsApiClient($this->getConfig());
+        return new AwsSnsApiClient($this->createSnsClient());
+    }
+
+    /**
+     * @return \Aws\Sns\SnsClient
+     */
+    public function createSnsClient(): SnsClient
+    {
+        $snsConfig = $this->getConfig()->getAwsSnsApiClientConfiguration();
+
+        $awsSnsClient = new SnsClient([
+            'credentials' => [
+                'key' => $snsConfig['accessKey'],
+                'secret' => $snsConfig['accessSecret'],
+            ],
+            'endpoint' => $snsConfig['endpoint'],
+            'region' => $snsConfig['region'],
+            'version' => $snsConfig['version'],
+        ]);
+
+        return $awsSnsClient;
     }
 }

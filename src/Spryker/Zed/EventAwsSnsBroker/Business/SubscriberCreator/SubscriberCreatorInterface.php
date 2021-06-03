@@ -10,9 +10,9 @@ namespace Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator;
 interface SubscriberCreatorInterface
 {
     /**
-     * @param string[] $eventBusNames
+     * @param string[] $eventBusNameTopicArnMap
      *
      * @return void
      */
-    public function createSubscribers(array $eventBusNames): void;
+    public function createSubscribers(array $eventBusNameTopicArnMap): void;
 }

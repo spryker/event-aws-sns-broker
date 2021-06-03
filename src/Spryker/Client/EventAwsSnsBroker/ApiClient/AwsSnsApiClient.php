@@ -11,7 +11,6 @@ use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
 use Exception;
 use RuntimeException;
-use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 use Spryker\Shared\ErrorHandler\ErrorLogger;
 
 class AwsSnsApiClient implements AwsSnsApiClientInterface
@@ -22,21 +21,11 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
     protected $awsSnsClient;
 
     /**
-     * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig $config
+     * @param \Aws\Sns\SnsClient $snsClient
      */
-    public function __construct(EventAwsSnsBrokerConfig $config)
+    public function __construct(SnsClient $snsClient)
     {
-        $snsConfig = $config->getAwsSnsApiClientConfiguration();
-
-        $this->awsSnsClient = new SnsClient([
-            'credentials' => [
-                'key' => $snsConfig['access_key'],
-                'secret' => $snsConfig['access_secret'],
-            ],
-            'endpoint' => $snsConfig['endpoint'],
-            'region' => $snsConfig['region'],
-            'version' => $snsConfig['version'],
-        ]);
+        $this->awsSnsClient = $snsClient;
     }
 
     /**

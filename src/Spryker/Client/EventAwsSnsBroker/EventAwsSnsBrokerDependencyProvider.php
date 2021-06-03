@@ -7,11 +7,11 @@
 
 namespace Spryker\Client\EventAwsSnsBroker;
 
-use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
+use Spryker\Client\Kernel\AbstractDependencyProvider;
 
 /**
  * @method \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig getConfig()
  */
-class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvider
+class EventAwsSnsBrokerDependencyProvider extends AbstractDependencyProvider
 {
 }
