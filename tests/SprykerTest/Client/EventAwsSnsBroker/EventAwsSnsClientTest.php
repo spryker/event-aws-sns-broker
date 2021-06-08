@@ -12,6 +12,7 @@ use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
 use Codeception\Test\Unit;
 use PHPUnit\Framework\MockObject\MockObject;
+use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClient;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerFactory;
@@ -75,12 +76,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(RuntimeException::class);
 
         // Act
-        $topicArn = $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
-
-        // Assert
-        $this->assertNull($topicArn);
+        $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
     }
 
     /**
@@ -101,12 +100,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(AwsException::class);
 
         // Act
-        $topicArn = $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
-
-        // Assert
-        $this->assertNull($topicArn);
+        $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
     }
 
     /**
@@ -155,12 +152,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(RuntimeException::class);
 
         // Act
-        $subscriberArn = $eventAwsSnsClient->createSubscriber('', '', '');
-
-        // Assert
-        $this->assertNull($subscriberArn);
+        $eventAwsSnsClient->createSubscriber('', '', '');
     }
 
     /**
@@ -181,12 +176,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(AwsException::class);
 
         // Act
-        $subscriberArn = $eventAwsSnsClient->createSubscriber('', '', '');
-
-        // Assert
-        $this->assertNull($subscriberArn);
+        $eventAwsSnsClient->createSubscriber('', '', '');
     }
 
     /**
@@ -235,12 +228,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(RuntimeException::class);
 
         // Act
-        $idMessage = $eventAwsSnsClient->publishEvent('', '');
-
-        // Assert
-        $this->assertNull($idMessage);
+        $eventAwsSnsClient->publishEvent('', '');
     }
 
     /**
@@ -261,12 +252,10 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(AwsException::class);
 
         // Act
-        $idMessage = $eventAwsSnsClient->publishEvent('', '');
-
-        // Assert
-        $this->assertNull($idMessage);
+        $eventAwsSnsClient->publishEvent('', '');
     }
 
     /**

@@ -76,7 +76,15 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function createEventTransferTransformer(): EventTransferTransformerInterface
     {
-        return new EventTransferTransformer();
+        return new EventTransferTransformer($this->getUtilEncoding());
+    }
+
+    /**
+     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     */
+    public function getUtilEncoding()
+    {
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_ENCODING);
     }
 
     /**

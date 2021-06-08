@@ -17,9 +17,12 @@ interface EventAwsSnsBrokerClientInterface
      *
      * @param string $topicName
      *
-     * @return string|null
+     * @throws \RuntimeException
+     * @throws \Aws\Exception\AwsException
+     *
+     * @return string
      */
-    public function createTopic(string $topicName): ?string;
+    public function createTopic(string $topicName): string;
 
     /**
      * Specification:
@@ -31,9 +34,12 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $endpoint
      * @param string $protocol
      *
-     * @return string|null
+     * @throws \RuntimeException
+     * @throws \Aws\Exception\AwsException
+     *
+     * @return string
      */
-    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): ?string;
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string;
 
     /**
      * Specification:
@@ -44,7 +50,10 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $topicArn
      * @param string $message
      *
-     * @return string|null
+     * @throws \RuntimeException
+     * @throws \Aws\Exception\AwsException
+     *
+     * @return string
      */
-    public function publishEvent(string $topicArn, string $message): ?string;
+    public function publishEvent(string $topicArn, string $message): string;
 }

@@ -18,6 +18,7 @@ class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvid
 {
     public const CLIENT_EVENT_AWS_SNS_BROKER = 'CLIENT_EVENT_AWS_SNS_BROKER';
     public const EVENT_FACADE = 'EVENT_FACADE';
+    public const SERVICE_ENCODING = 'SERVICE_ENCODING';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -28,6 +29,7 @@ class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvid
     {
         $container = $this->addEventAwsSnsBrokerClient($container);
         $container = $this->addEventFacade($container);
+        $container = $this->addEncodingUtilService($container);
 
         return $container;
     }
@@ -55,6 +57,20 @@ class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvid
     {
         $container->set(static::EVENT_FACADE, function (Container $container) {
             return new EventAwsSnsBrokerToEventFacadeBridge($container->getLocator()->event()->facade());
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addEncodingUtilService(Container $container): Container
+    {
+        $container->set(static::SERVICE_ENCODING, function (Container $container) {
+            return $container->getLocator()->utilEncoding()->service();
         });
 
         return $container;

@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher;
 
+use Exception;
 use Generated\Shared\Transfer\EventCollectionTransfer;
 use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
@@ -63,11 +64,15 @@ class EventPublisher implements EventPublisherInterface
         }
 
         foreach ($eventCollectionTransfer->getEvents() as $eventTransfer) {
-            $this->eventAwsSnsBrokerClient
-                ->publishEvent(
-                    $topicArn,
-                    $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer)
-                );
+            try {
+                $this->eventAwsSnsBrokerClient
+                    ->publishEvent(
+                        $topicArn,
+                        $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer)
+                    );
+            } catch (Exception $exception) {
+                ErrorLogger::getInstance()->log($exception);
+            }
         }
     }
 

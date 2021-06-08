@@ -7,7 +7,9 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator;
 
+use Exception;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Shared\ErrorHandler\ErrorLogger;
 
 class TopicCreator implements TopicCreatorInterface
 {
@@ -32,7 +34,11 @@ class TopicCreator implements TopicCreatorInterface
     public function createTopics(array $eventBusNames): void
     {
         foreach ($eventBusNames as $eventBusName) {
-            $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
+            try {
+                $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
+            } catch (Exception $exception) {
+                ErrorLogger::getInstance()->log($exception);
+            }
         }
     }
 }

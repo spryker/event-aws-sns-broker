@@ -7,7 +7,9 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator;
 
+use Exception;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Shared\ErrorHandler\ErrorLogger;
 use Spryker\Zed\EventAwsSnsBroker\Communication\Controller\EventHandleController;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
@@ -45,11 +47,15 @@ class SubscriberCreator implements SubscriberCreatorInterface
         foreach ($eventBusNameTopicArnMap as $eventBusName => $topicArn) {
             $endpoint = $this->getSubscriberEndpointByBusName($eventBusName);
 
-            $this->eventAwsSnsBrokerClient->createSubscriber(
-                $topicArn,
-                $endpoint,
-                $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
-            );
+            try {
+                $this->eventAwsSnsBrokerClient->createSubscriber(
+                    $topicArn,
+                    $endpoint,
+                    $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
+                );
+            } catch (Exception $exception) {
+                ErrorLogger::getInstance()->log($exception);
+            }
         }
     }
 

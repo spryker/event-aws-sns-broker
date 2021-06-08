@@ -26,13 +26,15 @@ class EventHandleController extends AbstractController
      */
     public function indexAction(Request $request): Response
     {
+        /** @var string $eventBusName */
         $eventBusName = $request->query->get(static::QUERY_PARAM_EVENT_BUS_NAME) ?? '';
 
         if (!is_string($request->getContent())) {
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = json_decode($request->getContent(), true);
+        /** @var mixed[] $data */
+        $data = $this->getFactory()->getUtilEncoding()->decodeJson($request->getContent(), true);
 
         if (!$this->getFacade()->isEventNotificationCorrect($data, $request->headers->all(), $eventBusName)) {
             return new Response('Received data is not supported.', Response::HTTP_BAD_REQUEST);

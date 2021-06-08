@@ -174,9 +174,9 @@ class EventAwsSnsBrokerFacadeTest extends Unit
         $eventTransfer->setMessage($eventEntityTransfer);
         $eventTransfer->setMessageType(EventEntityTransfer::class);
 
-        $EventAwsSnsBrokerToEventFacadeBridgeMock = $this->getMockBuilder(EventAwsSnsBrokerToEventFacadeInterface::class)
+        $eventAwsSnsBrokerToEventFacadeBridgeMock = $this->getMockBuilder(EventAwsSnsBrokerToEventFacadeInterface::class)
             ->getMock();
-        $EventAwsSnsBrokerToEventFacadeBridgeMock->expects($this->once())
+        $eventAwsSnsBrokerToEventFacadeBridgeMock->expects($this->once())
             ->method('dispatchEvents')
             ->willReturnCallback(function (EventCollectionTransfer $eventCollectionTransfer) use ($eventName, $nameEventEntity): void {
                 $this->assertEquals(static::TEST_EVENT_BUS_NAME_ONE, $eventCollectionTransfer->getEventBusName());
@@ -186,7 +186,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
                 $this->assertEquals($nameEventEntity, $eventTransfer->getMessage()->getName());
             });
 
-        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::EVENT_FACADE, $EventAwsSnsBrokerToEventFacadeBridgeMock);
+        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::EVENT_FACADE, $eventAwsSnsBrokerToEventFacadeBridgeMock);
 
         $encodedMessage = json_encode($eventTransfer->toArray());
 

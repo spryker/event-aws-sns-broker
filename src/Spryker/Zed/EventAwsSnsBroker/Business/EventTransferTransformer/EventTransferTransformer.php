@@ -9,9 +9,24 @@ namespace Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer;
 
 use Exception;
 use Generated\Shared\Transfer\EventTransfer;
+use RuntimeException;
+use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 
 class EventTransferTransformer implements EventTransferTransformerInterface
 {
+    /**
+     * @var \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     */
+    protected $utilEncodingService;
+
+    /**
+     * @param \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface $utilEncodingService
+     */
+    public function __construct(UtilEncodingServiceInterface $utilEncodingService)
+    {
+        $this->utilEncodingService = $utilEncodingService;
+    }
+
     /**
      * @param \Generated\Shared\Transfer\EventTransfer $eventTransfer
      *
@@ -21,7 +36,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
      */
     public function transformEventTransferIntoMessage(EventTransfer $eventTransfer): string
     {
-        $message = json_encode($eventTransfer->toArray());
+        $message = $this->utilEncodingService->encodeJson($eventTransfer->toArray());
 
         if ($message) {
             return $message;
@@ -33,11 +48,18 @@ class EventTransferTransformer implements EventTransferTransformerInterface
     /**
      * @param string $eventMessage
      *
+     * @throws \RuntimeException
+     *
      * @return \Generated\Shared\Transfer\EventTransfer
      */
     public function transformMessageIntoEventTransfer(string $eventMessage): EventTransfer
     {
-        $eventTransferData = json_decode($eventMessage, true);
+        $eventTransferData = $this->utilEncodingService->decodeJson($eventMessage, true);
+
+        if (!isset($eventTransferData['message'])) {
+            throw new RuntimeException('The body of the event message doesn\'t contain the \'message\' key.');
+        }
+
         $messageData = $eventTransferData['message'];
         unset($eventTransferData['message']);
 

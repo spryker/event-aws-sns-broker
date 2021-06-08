@@ -7,11 +7,8 @@
 
 namespace Spryker\Client\EventAwsSnsBroker\ApiClient;
 
-use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
-use Exception;
 use RuntimeException;
-use Spryker\Shared\ErrorHandler\ErrorLogger;
 
 class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
@@ -33,29 +30,21 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      *
      * @throws \RuntimeException
      *
-     * @return string|null
+     * @return string
      */
-    public function createTopic(string $topicName): ?string
+    public function createTopic(string $topicName): string
     {
-        try {
-            $topicBody = [
-                'Name' => $topicName,
-            ];
+        $topicBody = [
+            'Name' => $topicName,
+        ];
 
-            $result = $this->awsSnsClient->createTopic($topicBody);
+        $result = $this->awsSnsClient->createTopic($topicBody);
 
-            if (!isset($result['TopicArn'])) {
-                throw new RuntimeException('The response of the "createTopic" request doesn\'t contain the "TopicArn" key.');
-            }
-
-            return $result['TopicArn'];
-        } catch (AwsException $exception) {
-        } catch (RuntimeException $exception) {
+        if (!isset($result['TopicArn'])) {
+            throw new RuntimeException('The response of the "createTopic" request doesn\'t contain the "TopicArn" key.');
         }
 
-        $this->logException($exception);
-
-        return null;
+        return $result['TopicArn'];
     }
 
     /**
@@ -65,32 +54,24 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      *
      * @throws \RuntimeException
      *
-     * @return string|null
+     * @return string
      */
-    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): ?string
+    public function createSubscriber(string $topicArn, string $endpoint, string $protocol): string
     {
-        try {
-            $subscriptionBody = [
-                'Protocol' => $protocol,
-                'Endpoint' => $endpoint,
-                'ReturnSubscriptionArn' => true,
-                'TopicArn' => $topicArn,
-            ];
+        $subscriptionBody = [
+            'Protocol' => $protocol,
+            'Endpoint' => $endpoint,
+            'ReturnSubscriptionArn' => true,
+            'TopicArn' => $topicArn,
+        ];
 
-            $result = $this->awsSnsClient->subscribe($subscriptionBody);
+        $result = $this->awsSnsClient->subscribe($subscriptionBody);
 
-            if (!isset($result['SubscriptionArn'])) {
-                throw new RuntimeException('The response of the "subscribe" request doesn\'t contain the "SubscriptionArn" key.');
-            }
-
-            return $result['SubscriptionArn'];
-        } catch (AwsException $exception) {
-        } catch (RuntimeException $exception) {
+        if (!isset($result['SubscriptionArn'])) {
+            throw new RuntimeException('The response of the "subscribe" request doesn\'t contain the "SubscriptionArn" key.');
         }
 
-        $this->logException($exception);
-
-        return null;
+        return $result['SubscriptionArn'];
     }
 
     /**
@@ -99,38 +80,20 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
      *
      * @throws \RuntimeException
      *
-     * @return string|null
+     * @return string
      */
-    public function publishEvent(string $topicArn, string $message): ?string
+    public function publishEvent(string $topicArn, string $message): string
     {
-        try {
-            $messageBody = [
-                'Message' => $message,
-                'TopicArn' => $topicArn,
-            ];
-            $result = $this->awsSnsClient->publish($messageBody);
+        $messageBody = [
+            'Message' => $message,
+            'TopicArn' => $topicArn,
+        ];
+        $result = $this->awsSnsClient->publish($messageBody);
 
-            if (!isset($result['MessageId'])) {
-                throw new RuntimeException('The response of the "publish" request doesn\'t contain the "MessageId" key.');
-            }
-
-            return $result['MessageId'];
-        } catch (AwsException $exception) {
-        } catch (RuntimeException $exception) {
+        if (!isset($result['MessageId'])) {
+            throw new RuntimeException('The response of the "publish" request doesn\'t contain the "MessageId" key.');
         }
 
-        $this->logException($exception);
-
-        return null;
-    }
-
-    /**
-     * @param \Exception $exception
-     *
-     * @return void
-     */
-    protected function logException(Exception $exception): void
-    {
-        ErrorLogger::getInstance()->log($exception);
+        return $result['MessageId'];
     }
 }

@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Communication;
 
+use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 
 /**
@@ -15,4 +16,11 @@ use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
  */
 class EventAwsSnsBrokerCommunicationFactory extends AbstractCommunicationFactory
 {
+    /**
+     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     */
+    public function getUtilEncoding()
+    {
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_ENCODING);
+    }
 }
