@@ -186,7 +186,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
                 $this->assertEquals($nameEventEntity, $eventTransfer->getMessage()->getName());
             });
 
-        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::EVENT_FACADE, $eventAwsSnsBrokerToEventFacadeBridgeMock);
+        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::FACADE_EVENT, $eventAwsSnsBrokerToEventFacadeBridgeMock);
 
         $encodedMessage = json_encode($eventTransfer->toArray());
 

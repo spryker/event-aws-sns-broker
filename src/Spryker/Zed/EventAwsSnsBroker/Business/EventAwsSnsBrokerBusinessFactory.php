@@ -21,6 +21,7 @@ use Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreatorIn
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface;
+use Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
@@ -76,13 +77,13 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function createEventTransferTransformer(): EventTransferTransformerInterface
     {
-        return new EventTransferTransformer($this->getUtilEncoding());
+        return new EventTransferTransformer($this->getUtilEncodingService());
     }
 
     /**
-     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface
      */
-    public function getUtilEncoding()
+    public function getUtilEncodingService(): EventAwsSnsBrokerToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_ENCODING);
     }
@@ -108,6 +109,6 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function getEventFacade(): EventAwsSnsBrokerToEventFacadeInterface
     {
-        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::EVENT_FACADE);
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::FACADE_EVENT);
     }
 }

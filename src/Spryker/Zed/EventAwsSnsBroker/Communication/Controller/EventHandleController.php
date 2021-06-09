@@ -34,7 +34,7 @@ class EventHandleController extends AbstractController
         }
 
         /** @var mixed[] $data */
-        $data = $this->getFactory()->getUtilEncoding()->decodeJson($request->getContent(), true);
+        $data = $this->getFactory()->getUtilEncodingService()->decodeJson($request->getContent(), true);
 
         if (!$this->getFacade()->isEventNotificationCorrect($data, $request->headers->all(), $eventBusName)) {
             return new Response('Received data is not supported.', Response::HTTP_BAD_REQUEST);

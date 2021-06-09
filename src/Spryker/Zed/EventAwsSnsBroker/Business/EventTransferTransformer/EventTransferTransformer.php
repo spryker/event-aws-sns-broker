@@ -10,19 +10,19 @@ namespace Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer;
 use Exception;
 use Generated\Shared\Transfer\EventTransfer;
 use RuntimeException;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
+use Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface;
 
 class EventTransferTransformer implements EventTransferTransformerInterface
 {
     /**
-     * @var \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     * @var \Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface
      */
     protected $utilEncodingService;
 
     /**
-     * @param \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface $utilEncodingService
+     * @param \Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService
      */
-    public function __construct(UtilEncodingServiceInterface $utilEncodingService)
+    public function __construct(EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService)
     {
         $this->utilEncodingService = $utilEncodingService;
     }
