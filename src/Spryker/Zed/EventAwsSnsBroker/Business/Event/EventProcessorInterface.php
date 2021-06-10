@@ -5,9 +5,9 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventHandler;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Event;
 
-interface EventHandlerInterface
+interface EventProcessorInterface
 {
     /**
      * @param string $eventMessage

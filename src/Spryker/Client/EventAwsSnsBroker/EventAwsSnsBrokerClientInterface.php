@@ -17,8 +17,7 @@ interface EventAwsSnsBrokerClientInterface
      *
      * @param string $topicName
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */
@@ -34,8 +33,7 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $endpoint
      * @param string $protocol
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */
@@ -50,8 +48,7 @@ interface EventAwsSnsBrokerClientInterface
      * @param string $topicArn
      * @param string $message
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */

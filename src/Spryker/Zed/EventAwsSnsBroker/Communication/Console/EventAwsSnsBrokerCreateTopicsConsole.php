@@ -17,16 +17,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class EventAwsSnsBrokerCreateTopicsConsole extends Console
 {
-    public const COMMAND_NAME = 'event-broker:aws-sns:create-topics';
-    public const DESCRIPTION = 'This command creates topics based on event bus names from config.';
+    protected const COMMAND_NAME = 'event-broker:aws-sns:create-topics';
+    protected const COMMAND_DESCRIPTION = 'This command creates topics based on event bus names from config.';
 
     /**
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME);
-        $this->setDescription(static::DESCRIPTION);
+        $this->setDescription(static::COMMAND_DESCRIPTION);
 
         parent::configure();
     }
@@ -39,7 +39,7 @@ class EventAwsSnsBrokerCreateTopicsConsole extends Console
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->getFacade()->createTopics($this->getFactory()->getConfig()->getAwsSnsEventBusNames());
+        $this->getFacade()->createTopics();
 
         return static::CODE_SUCCESS;
     }

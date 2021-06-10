@@ -5,17 +5,16 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventHandler;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Event;
 
-use ArrayObject;
 use Generated\Shared\Transfer\EventCollectionTransfer;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface;
 
-class EventHandler implements EventHandlerInterface
+class EventProcessor implements EventProcessorInterface
 {
     /**
-     * @var \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface
+     * @var \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface
      */
     protected $eventTransferTransformer;
 
@@ -25,7 +24,7 @@ class EventHandler implements EventHandlerInterface
     private $eventAwsSnsBrokerToEventFacade;
 
     /**
-     * @param \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface $eventTransferTransformer
+     * @param \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface $eventTransferTransformer
      * @param \Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface $eventAwsSnsBrokerToEventFacade
      */
     public function __construct(
@@ -45,7 +44,7 @@ class EventHandler implements EventHandlerInterface
     public function handleEvent(string $eventMessage, string $eventBusName): void
     {
         $this->eventAwsSnsBrokerToEventFacade
-            ->dispatchEvents(
+            ->dispatch(
                 $this->prepareEventCollectionTransfer($eventMessage, $eventBusName)
             );
     }
@@ -59,13 +58,9 @@ class EventHandler implements EventHandlerInterface
     protected function prepareEventCollectionTransfer(string $eventMessage, string $eventBusName): EventCollectionTransfer
     {
         $eventTransfer = $this->eventTransferTransformer->transformMessageIntoEventTransfer($eventMessage);
-        $events = new ArrayObject();
-        $events->append($eventTransfer);
 
-        $eventCollectionTransfer = new EventCollectionTransfer();
-        $eventCollectionTransfer->setEvents($events);
-        $eventCollectionTransfer->setEventBusName($eventBusName);
-
-        return $eventCollectionTransfer;
+        return (new EventCollectionTransfer())
+            ->addEvent($eventTransfer)
+            ->setEventBusName($eventBusName);
     }
 }

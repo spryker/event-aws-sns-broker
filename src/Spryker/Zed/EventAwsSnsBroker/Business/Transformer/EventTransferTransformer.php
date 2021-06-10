@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Transformer;
 
 use Exception;
 use Generated\Shared\Transfer\EventTransfer;

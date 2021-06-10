@@ -5,14 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Event;
 
-use Exception;
 use Generated\Shared\Transfer\EventCollectionTransfer;
-use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
 use Spryker\Shared\ErrorHandler\ErrorLogger;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException;
+use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class EventPublisher implements EventPublisherInterface
@@ -23,7 +23,7 @@ class EventPublisher implements EventPublisherInterface
     protected $eventAwsSnsBrokerClient;
 
     /**
-     * @var \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface
+     * @var \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface
      */
     protected $eventTransferTransformer;
 
@@ -34,7 +34,7 @@ class EventPublisher implements EventPublisherInterface
 
     /**
      * @param \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface $eventAwsSnsBrokerClient
-     * @param \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface $eventTransferTransformer
+     * @param \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface $eventTransferTransformer
      * @param \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
      */
     public function __construct(
@@ -56,13 +56,6 @@ class EventPublisher implements EventPublisherInterface
     {
         $topicArn = $this->getTopicArnByEventBusName($eventCollectionTransfer->getEventBusNameOrFail());
 
-        if (!$topicArn) {
-            $exception = new RuntimeException('Requested event bus is not configured.');
-            ErrorLogger::getInstance()->log($exception);
-
-            return;
-        }
-
         foreach ($eventCollectionTransfer->getEvents() as $eventTransfer) {
             try {
                 $this->eventAwsSnsBrokerClient
@@ -70,7 +63,7 @@ class EventPublisher implements EventPublisherInterface
                         $topicArn,
                         $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer)
                     );
-            } catch (Exception $exception) {
+            } catch (AwsSnsClientResponseException $exception) {
                 ErrorLogger::getInstance()->log($exception);
             }
         }
@@ -79,12 +72,18 @@ class EventPublisher implements EventPublisherInterface
     /**
      * @param string $eventBusName
      *
-     * @return string|null
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
+     *
+     * @return string
      */
-    protected function getTopicArnByEventBusName(string $eventBusName): ?string
+    protected function getTopicArnByEventBusName(string $eventBusName): string
     {
-        $map = $this->eventAwsSnsBrokerConfig->getAwsSnsTopicArnMappedWithEventBusNames();
+        $topicNameTopicArnMap = $this->eventAwsSnsBrokerConfig->getAwsSnsTopicArnMappedWithEventBusNames();
 
-        return $map[$eventBusName] ?? null;
+        if (isset($topicNameTopicArnMap[$eventBusName])) {
+            return $topicNameTopicArnMap[$eventBusName];
+        }
+
+        throw new EventBusNameConfigException('Requested event bus is not configured.');
     }
 }

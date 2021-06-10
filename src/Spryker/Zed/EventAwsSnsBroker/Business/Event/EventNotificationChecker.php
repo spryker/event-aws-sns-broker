@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventNotificationChecker;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Event;
 
 class EventNotificationChecker implements EventNotificationCheckerInterface
 {

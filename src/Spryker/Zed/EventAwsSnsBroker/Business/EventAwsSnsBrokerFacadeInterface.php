@@ -17,11 +17,11 @@ interface EventAwsSnsBrokerFacadeInterface
      *
      * @api
      *
-     * @param string[] $eventBusNames
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */
-    public function createTopics(array $eventBusNames): void;
+    public function createTopics(): void;
 
     /**
      * Specification:
@@ -30,11 +30,11 @@ interface EventAwsSnsBrokerFacadeInterface
      *
      * @api
      *
-     * @param string[] $topicArnsWithEventBusNames
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */
-    public function createSubscribers(array $topicArnsWithEventBusNames): void;
+    public function createSubscribers(): void;
 
     /**
      * Specification:
@@ -43,6 +43,8 @@ interface EventAwsSnsBrokerFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\EventCollectionTransfer $eventCollectionTransfer
+     *
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
      *
      * @return void
      */

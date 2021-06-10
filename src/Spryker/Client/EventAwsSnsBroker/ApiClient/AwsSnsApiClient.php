@@ -8,10 +8,14 @@
 namespace Spryker\Client\EventAwsSnsBroker\ApiClient;
 
 use Aws\Sns\SnsClient;
-use RuntimeException;
+use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
 
 class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
+    protected const RESPONSE_TOPIC_ARN_KEY = 'TopicArn';
+    protected const RESPONSE_SUBSCRIPTION_ARN_KEY = 'SubscriptionArn';
+    protected const RESPONSE_MESSAGE_ID_KEY = 'MessageId';
+
     /**
      * @var \Aws\Sns\SnsClient
      */
@@ -28,8 +32,6 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
     /**
      * @param string $topicName
      *
-     * @throws \RuntimeException
-     *
      * @return string
      */
     public function createTopic(string $topicName): string
@@ -40,19 +42,17 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
 
         $result = $this->awsSnsClient->createTopic($topicBody);
 
-        if (!isset($result['TopicArn'])) {
-            throw new RuntimeException('The response of the "createTopic" request doesn\'t contain the "TopicArn" key.');
+        if (!isset($result[static::RESPONSE_TOPIC_ARN_KEY])) {
+            $this->throwNotExistException('createTopic', static::RESPONSE_TOPIC_ARN_KEY);
         }
 
-        return $result['TopicArn'];
+        return $result[static::RESPONSE_TOPIC_ARN_KEY];
     }
 
     /**
      * @param string $topicArn
      * @param string $endpoint
      * @param string $protocol
-     *
-     * @throws \RuntimeException
      *
      * @return string
      */
@@ -67,18 +67,16 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
 
         $result = $this->awsSnsClient->subscribe($subscriptionBody);
 
-        if (!isset($result['SubscriptionArn'])) {
-            throw new RuntimeException('The response of the "subscribe" request doesn\'t contain the "SubscriptionArn" key.');
+        if (!isset($result[static::RESPONSE_SUBSCRIPTION_ARN_KEY])) {
+            $this->throwNotExistException('subscribe', static::RESPONSE_SUBSCRIPTION_ARN_KEY);
         }
 
-        return $result['SubscriptionArn'];
+        return $result[static::RESPONSE_SUBSCRIPTION_ARN_KEY];
     }
 
     /**
      * @param string $topicArn
      * @param string $message
-     *
-     * @throws \RuntimeException
      *
      * @return string
      */
@@ -90,10 +88,27 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
         ];
         $result = $this->awsSnsClient->publish($messageBody);
 
-        if (!isset($result['MessageId'])) {
-            throw new RuntimeException('The response of the "publish" request doesn\'t contain the "MessageId" key.');
+        if (!isset($result[static::RESPONSE_MESSAGE_ID_KEY])) {
+            $this->throwNotExistException('publish', static::RESPONSE_MESSAGE_ID_KEY);
         }
 
-        return $result['MessageId'];
+        return $result[static::RESPONSE_MESSAGE_ID_KEY];
+    }
+
+    /**
+     * @param string $methodName
+     * @param string $notExistedKeyName
+     *
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
+     *
+     * @return void
+     */
+    public function throwNotExistException(string $methodName, string $notExistedKeyName): void
+    {
+        throw new AwsSnsClientResponseException(sprintf(
+            "The response of the '%s' request doesn't contain the '%s' key.",
+            $methodName,
+            $notExistedKeyName
+        ));
     }
 }

@@ -12,8 +12,7 @@ interface AwsSnsApiClientInterface
     /**
      * @param string $topicName
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */
@@ -24,8 +23,7 @@ interface AwsSnsApiClientInterface
      * @param string $endpoint
      * @param string $protocol
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */
@@ -35,8 +33,7 @@ interface AwsSnsApiClientInterface
      * @param string $topicArn
      * @param string $message
      *
-     * @throws \RuntimeException
-     * @throws \Aws\Exception\AwsException
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return string
      */

@@ -7,15 +7,13 @@
 
 namespace SprykerTest\Client\EventAwsSnsBroker;
 
-use Aws\Command;
-use Aws\Exception\AwsException;
 use Aws\Sns\SnsClient;
 use Codeception\Test\Unit;
 use PHPUnit\Framework\MockObject\MockObject;
-use RuntimeException;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClient;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerFactory;
+use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
 
 /**
  * Auto-generated group annotations
@@ -76,31 +74,7 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(RuntimeException::class);
-
-        // Act
-        $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateTopicsShouldBeAwsException(): void
-    {
-        // Arrange
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\Aws\Sns\SnsClient $snsClientMock */
-        $snsClientMock = $this->getMockBuilder(SnsClient::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['createTopic'])
-            ->getMock();
-        $snsClientMock->expects($this->once())
-            ->method('createTopic')
-            ->willReturnCallback(function (): void {
-                throw new AwsException('', new Command('createTopic'));
-            });
-
-        $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(AwsException::class);
+        $this->expectException(AwsSnsClientResponseException::class);
 
         // Act
         $eventAwsSnsClient->createTopic(static::TEST_EVENT_BUS_NAME_ONE);
@@ -152,31 +126,7 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(RuntimeException::class);
-
-        // Act
-        $eventAwsSnsClient->createSubscriber('', '', '');
-    }
-
-    /**
-     * @return void
-     */
-    public function testCreateSubscriberShouldBeAwsException(): void
-    {
-        // Arrange
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\Aws\Sns\SnsClient $snsClientMock */
-        $snsClientMock = $this->getMockBuilder(SnsClient::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['subscribe'])
-            ->getMock();
-        $snsClientMock->expects($this->once())
-            ->method('subscribe')
-            ->willReturnCallback(function (): void {
-                throw new AwsException('', new Command('subscribe'));
-            });
-
-        $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(AwsException::class);
+        $this->expectException(AwsSnsClientResponseException::class);
 
         // Act
         $eventAwsSnsClient->createSubscriber('', '', '');
@@ -228,31 +178,7 @@ class EventAwsSnsClientTest extends Unit
             });
 
         $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(RuntimeException::class);
-
-        // Act
-        $eventAwsSnsClient->publishEvent('', '');
-    }
-
-    /**
-     * @return void
-     */
-    public function testPublishEventShouldBeAwsException(): void
-    {
-        // Arrange
-        /** @var \PHPUnit\Framework\MockObject\MockObject|\Aws\Sns\SnsClient $snsClientMock */
-        $snsClientMock = $this->getMockBuilder(SnsClient::class)
-            ->disableOriginalConstructor()
-            ->addMethods(['publish'])
-            ->getMock();
-        $snsClientMock->expects($this->once())
-            ->method('publish')
-            ->willReturnCallback(function (): void {
-                throw new AwsException('', new Command('publish'));
-            });
-
-        $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
-        $this->expectException(AwsException::class);
+        $this->expectException(AwsSnsClientResponseException::class);
 
         // Act
         $eventAwsSnsClient->publishEvent('', '');

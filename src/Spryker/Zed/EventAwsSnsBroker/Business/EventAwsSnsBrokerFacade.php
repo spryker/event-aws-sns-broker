@@ -20,15 +20,15 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      *
      * @api
      *
-     * @param string[] $eventBusNames
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */
-    public function createTopics(array $eventBusNames): void
+    public function createTopics(): void
     {
         $this->getFactory()
             ->createTopicCreator()
-            ->createTopics($eventBusNames);
+            ->createTopics();
     }
 
     /**
@@ -36,15 +36,15 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      *
      * @api
      *
-     * @param string[] $topicArnsWithEventBusNames
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */
-    public function createSubscribers(array $topicArnsWithEventBusNames): void
+    public function createSubscribers(): void
     {
         $this->getFactory()
             ->createSubscriberCreator()
-            ->createSubscribers($topicArnsWithEventBusNames);
+            ->createSubscribers();
     }
 
     /**
@@ -53,6 +53,8 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      * @api
      *
      * @param \Generated\Shared\Transfer\EventCollectionTransfer $eventCollectionTransfer
+     *
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
      *
      * @return void
      */
@@ -76,7 +78,7 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
     public function handleEvent(string $eventMessage, string $eventBusName): void
     {
         $this->getFactory()
-            ->createEventHandler()
+            ->createEventProcessor()
             ->handleEvent($eventMessage, $eventBusName);
     }
 

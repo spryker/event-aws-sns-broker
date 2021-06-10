@@ -14,7 +14,7 @@ interface EventAwsSnsBrokerConstants
 {
     /**
      * Specification:
-     * - Contains configurations value for module.
+     * - Defines configurations value for module.
      *
      * @api
      */
@@ -22,7 +22,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS access key used for SNS.
+     * - Defines AWS access key used for SNS.
      *
      * @api
      */
@@ -30,7 +30,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS secret used for SNS.
+     * - Defines AWS secret used for SNS.
      *
      * @api
      */
@@ -38,7 +38,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS region used for SNS.
+     * - Defines AWS region used for SNS.
      *
      * @api
      */
@@ -46,7 +46,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS SNS api endpoint.
+     * - Defines AWS SNS api endpoint.
      *
      * @api
      */
@@ -54,7 +54,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS SNS api version.
+     * - Defines AWS SNS api version.
      *
      * @api
      */
@@ -62,7 +62,7 @@ interface EventAwsSnsBrokerConstants
 
     /**
      * Specification:
-     * - Contains AWS SNS topic ARNs mapped with event bus name.
+     * - Defines AWS SNS topic ARNs mapped with event bus name.
      *
      * @api
      */

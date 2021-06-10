@@ -5,11 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Subscriber;
 
-use Exception;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
-use Spryker\Shared\ErrorHandler\ErrorLogger;
+use Spryker\Service\UtilText\Model\Url\Url;
 use Spryker\Zed\EventAwsSnsBroker\Communication\Controller\EventHandleController;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
@@ -38,24 +37,16 @@ class SubscriberCreator implements SubscriberCreatorInterface
     }
 
     /**
-     * @param string[] $eventBusNameTopicArnMap
-     *
      * @return void
      */
-    public function createSubscribers(array $eventBusNameTopicArnMap): void
+    public function createSubscribers(): void
     {
-        foreach ($eventBusNameTopicArnMap as $eventBusName => $topicArn) {
-            $endpoint = $this->getSubscriberEndpointByBusName($eventBusName);
-
-            try {
-                $this->eventAwsSnsBrokerClient->createSubscriber(
-                    $topicArn,
-                    $endpoint,
-                    $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
-                );
-            } catch (Exception $exception) {
-                ErrorLogger::getInstance()->log($exception);
-            }
+        foreach ($this->eventAwsSnsBrokerConfig->getAwsSnsTopicArnMappedWithEventBusNames() as $eventBusName => $topicArn) {
+            $this->eventAwsSnsBrokerClient->createSubscriber(
+                $topicArn,
+                $this->getSubscriberEndpointByBusName($eventBusName),
+                $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
+            );
         }
     }
 
@@ -66,12 +57,9 @@ class SubscriberCreator implements SubscriberCreatorInterface
      */
     protected function getSubscriberEndpointByBusName(string $eventBusName): string
     {
-        return sprintf(
-            '%s/%s?%s=%s',
-            $this->eventAwsSnsBrokerConfig->getZedRequestBaseUrl(),
-            'event-aws-sns-broker/event-handle',
-            EventHandleController::QUERY_PARAM_EVENT_BUS_NAME,
-            $eventBusName
-        );
+        return Url::parse($this->eventAwsSnsBrokerConfig->getZedRequestBaseUrl())
+            ->addPath('event-aws-sns-broker/event-handle')
+            ->addQuery(EventHandleController::QUERY_PARAM_EVENT_BUS_NAME, $eventBusName)
+            ->build();
     }
 }

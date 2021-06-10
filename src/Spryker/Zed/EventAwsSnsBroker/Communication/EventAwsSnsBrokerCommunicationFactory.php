@@ -22,6 +22,6 @@ class EventAwsSnsBrokerCommunicationFactory extends AbstractCommunicationFactory
      */
     public function getUtilEncodingService(): EventAwsSnsBrokerToUtilEncodingServiceInterface
     {
-        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_ENCODING);
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_UTIL_ENCODING);
     }
 }

@@ -26,6 +26,8 @@ class EventAwsSnsBrokerEventBrokerPlugin extends AbstractPlugin implements Event
      *
      * @param \Generated\Shared\Transfer\EventCollectionTransfer $eventCollectionTransfer
      *
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
+     *
      * @return void
      */
     public function putEvents(EventCollectionTransfer $eventCollectionTransfer): void

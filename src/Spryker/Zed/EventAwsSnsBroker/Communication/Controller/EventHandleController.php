@@ -33,10 +33,10 @@ class EventHandleController extends AbstractController
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
-        /** @var mixed[] $data */
-        $data = $this->getFactory()->getUtilEncodingService()->decodeJson($request->getContent(), true);
+        $data = $this->getFactory()->getUtilEncodingService()
+            ->decodeJson($request->getContent(), true);
 
-        if (!$this->getFacade()->isEventNotificationCorrect($data, $request->headers->all(), $eventBusName)) {
+        if ($data === null || !$this->getFacade()->isEventNotificationCorrect($data, $request->headers->all(), $eventBusName)) {
             return new Response('Received data is not supported.', Response::HTTP_BAD_REQUEST);
         }
 

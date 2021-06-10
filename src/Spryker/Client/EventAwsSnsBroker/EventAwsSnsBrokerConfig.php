@@ -20,16 +20,8 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @return string[]
      */
-    public function getAwsSnsApiClientConfiguration(): array
+    public function getAwsSnsApiClientConfigurations(): array
     {
-        $configs = $this->get(EventAwsSnsBrokerConstants::EVENT_AWS_SNS_BROKER_CONFIG);
-
-        return [
-            'accessKey' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_KEY],
-            'accessSecret' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_SECRET],
-            'region' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_REGION],
-            'endpoint' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_ENDPOINT],
-            'version' => $configs[EventAwsSnsBrokerConstants::AWS_SNS_VERSION],
-        ];
+        return $this->get(EventAwsSnsBrokerConstants::EVENT_AWS_SNS_BROKER_CONFIG);
     }
 }

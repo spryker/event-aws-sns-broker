@@ -8,18 +8,18 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventHandler\EventHandler;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventHandler\EventHandlerInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventNotificationChecker\EventNotificationChecker;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventNotificationChecker\EventNotificationCheckerInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher\EventPublisher;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher\EventPublisherInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformer;
-use Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreator;
-use Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreatorInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreator;
-use Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventNotificationChecker;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventNotificationCheckerInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventProcessor;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventProcessorInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventPublisher;
+use Spryker\Zed\EventAwsSnsBroker\Business\Event\EventPublisherInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Subscriber\SubscriberCreator;
+use Spryker\Zed\EventAwsSnsBroker\Business\Subscriber\SubscriberCreatorInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Topic\TopicCreator;
+use Spryker\Zed\EventAwsSnsBroker\Business\Topic\TopicCreatorInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformer;
+use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
@@ -31,26 +31,29 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
 {
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\EventHandler\EventHandlerInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Event\EventProcessorInterface
      */
-    public function createEventHandler(): EventHandlerInterface
+    public function createEventProcessor(): EventProcessorInterface
     {
-        return new EventHandler(
+        return new EventProcessor(
             $this->createEventTransferTransformer(),
             $this->getEventFacade()
         );
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\TopicCreator\TopicCreatorInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Topic\TopicCreatorInterface
      */
     public function createTopicCreator(): TopicCreatorInterface
     {
-        return new TopicCreator($this->getEventAwsSnsBrokerClient());
+        return new TopicCreator(
+            $this->getEventAwsSnsBrokerClient(),
+            $this->getConfig()
+        );
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\SubscriberCreator\SubscriberCreatorInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Subscriber\SubscriberCreatorInterface
      */
     public function createSubscriberCreator(): SubscriberCreatorInterface
     {
@@ -61,7 +64,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher\EventPublisherInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Event\EventPublisherInterface
      */
     public function createEventPublisher(): EventPublisherInterface
     {
@@ -73,7 +76,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\EventTransferTransformer\EventTransferTransformerInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface
      */
     public function createEventTransferTransformer(): EventTransferTransformerInterface
     {
@@ -85,11 +88,11 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function getUtilEncodingService(): EventAwsSnsBrokerToUtilEncodingServiceInterface
     {
-        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_ENCODING);
+        return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_UTIL_ENCODING);
     }
 
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\EventNotificationChecker\EventNotificationCheckerInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Event\EventNotificationCheckerInterface
      */
     public function createEventNotificationChecker(): EventNotificationCheckerInterface
     {

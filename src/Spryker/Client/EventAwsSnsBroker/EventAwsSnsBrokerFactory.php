@@ -11,6 +11,7 @@ use Aws\Sns\SnsClient;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClient;
 use Spryker\Client\EventAwsSnsBroker\ApiClient\AwsSnsApiClientInterface;
 use Spryker\Client\Kernel\AbstractFactory;
+use Spryker\Shared\EventAwsSnsBroker\EventAwsSnsBrokerConstants;
 
 /**
  * @method \Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerConfig getConfig()
@@ -30,18 +31,16 @@ class EventAwsSnsBrokerFactory extends AbstractFactory
      */
     public function createSnsClient(): SnsClient
     {
-        $snsConfig = $this->getConfig()->getAwsSnsApiClientConfiguration();
+        $awsSnsApiClientConfigurations = $this->getConfig()->getAwsSnsApiClientConfigurations();
 
-        $awsSnsClient = new SnsClient([
+        return new SnsClient([
             'credentials' => [
-                'key' => $snsConfig['accessKey'],
-                'secret' => $snsConfig['accessSecret'],
+                'key' => $awsSnsApiClientConfigurations[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_KEY],
+                'secret' => $awsSnsApiClientConfigurations[EventAwsSnsBrokerConstants::AWS_SNS_ACCESS_SECRET],
             ],
-            'endpoint' => $snsConfig['endpoint'],
-            'region' => $snsConfig['region'],
-            'version' => $snsConfig['version'],
+            'endpoint' => $awsSnsApiClientConfigurations[EventAwsSnsBrokerConstants::AWS_SNS_ENDPOINT],
+            'region' => $awsSnsApiClientConfigurations[EventAwsSnsBrokerConstants::AWS_SNS_REGION],
+            'version' => $awsSnsApiClientConfigurations[EventAwsSnsBrokerConstants::AWS_SNS_VERSION],
         ]);
-
-        return $awsSnsClient;
     }
 }

@@ -7,8 +7,10 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker;
 
+use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\EventAwsSnsBroker\EventAwsSnsBrokerConstants;
-use Spryker\Shared\ZedRequest\ZedRequestConstants;
+use Spryker\Shared\Router\RouterConstants;
+use Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class EventAwsSnsBrokerConfig extends AbstractBundleConfig
@@ -34,15 +36,23 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @phpstan-return array<int, string>
      *
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
+     *
      * @return string[]
      */
     public function getAwsSnsEventBusNames(): array
     {
         $topicNameEventBusNameMap = $this->get(EventAwsSnsBrokerConstants::AWS_SNS_BUS_NAMES_TOPIC_ARN, []);
 
-        return array_filter(array_keys($topicNameEventBusNameMap), function ($key): bool {
-            return is_string($key);
-        });
+        $eventBusNames = array_keys($topicNameEventBusNameMap);
+
+        foreach ($eventBusNames as $eventBusName) {
+            if (is_numeric($eventBusName)) {
+                throw new EventBusNameConfigException();
+            }
+        }
+
+        return $eventBusNames;
     }
 
     /**
@@ -55,14 +65,12 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      */
     public function getZedRequestBaseUrl(): string
     {
-        return $this->getConfig()->get(ZedRequestConstants::ZED_API_SSL_ENABLED)
-            ? $this->getConfig()->get(ZedRequestConstants::BASE_URL_SSL_ZED_API)
-            : $this->getConfig()->get(ZedRequestConstants::BASE_URL_ZED_API);
+        return $this->getConfig()->get(ApplicationConstants::BASE_URL_ZED);
     }
 
     /**
      * Specification:
-     * - Returns one of supported protocols of sns.
+     * - Returns one of supported protocols of SNS.
      *
      * @api
      *
@@ -70,7 +78,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      */
     public function getAwsSnsProtocol(): string
     {
-        return $this->getConfig()->get(ZedRequestConstants::ZED_API_SSL_ENABLED)
+        return $this->getConfig()->get(RouterConstants::ZED_IS_SSL_ENABLED)
             ? 'https'
             : 'http';
     }

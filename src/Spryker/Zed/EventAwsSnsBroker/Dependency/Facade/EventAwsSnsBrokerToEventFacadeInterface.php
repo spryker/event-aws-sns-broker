@@ -16,5 +16,5 @@ interface EventAwsSnsBrokerToEventFacadeInterface
      *
      * @return void
      */
-    public function dispatchEvents(EventCollectionTransfer $eventCollectionTransfer): void;
+    public function dispatch(EventCollectionTransfer $eventCollectionTransfer): void;
 }

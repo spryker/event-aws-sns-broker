@@ -29,7 +29,7 @@ class EventAwsSnsBrokerToEventFacadeBridge implements EventAwsSnsBrokerToEventFa
      *
      * @return void
      */
-    public function dispatchEvents(EventCollectionTransfer $eventCollectionTransfer): void
+    public function dispatch(EventCollectionTransfer $eventCollectionTransfer): void
     {
         $this->eventFacade->dispatch($eventCollectionTransfer);
     }

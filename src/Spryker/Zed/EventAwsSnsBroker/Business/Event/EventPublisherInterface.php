@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\EventPublisher;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Event;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
 
@@ -13,6 +13,8 @@ interface EventPublisherInterface
 {
     /**
      * @param \Generated\Shared\Transfer\EventCollectionTransfer $eventCollectionTransfer
+     *
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
      *
      * @return void
      */
