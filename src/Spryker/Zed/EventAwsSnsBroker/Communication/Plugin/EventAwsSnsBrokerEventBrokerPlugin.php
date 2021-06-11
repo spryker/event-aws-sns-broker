@@ -9,6 +9,7 @@ namespace Spryker\Zed\EventAwsSnsBroker\Communication\Plugin;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
 use Spryker\Shared\EventExtension\Dependency\Plugin\EventBrokerPluginInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
@@ -47,6 +48,14 @@ class EventAwsSnsBrokerEventBrokerPlugin extends AbstractPlugin implements Event
      */
     public function isApplicable(string $eventBusName): bool
     {
-        return in_array($eventBusName, $this->getConfig()->getAwsSnsEventBusNames(), true);
+        $registeredEventBusNames = $this->getConfig()->getAwsSnsEventBusNames();
+
+        foreach ($registeredEventBusNames as $registeredEventBusName) {
+            if (is_numeric($registeredEventBusName)) {
+                throw new EventBusNameConfigException();
+            }
+        }
+
+        return in_array($eventBusName, $registeredEventBusNames, true);
     }
 }

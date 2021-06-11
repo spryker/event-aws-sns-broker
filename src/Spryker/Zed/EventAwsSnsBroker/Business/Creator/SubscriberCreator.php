@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\Subscriber;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Creator;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 use Spryker\Service\UtilText\Model\Url\Url;

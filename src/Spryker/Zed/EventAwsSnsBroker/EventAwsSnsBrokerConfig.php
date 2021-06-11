@@ -10,7 +10,6 @@ namespace Spryker\Zed\EventAwsSnsBroker;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\EventAwsSnsBroker\EventAwsSnsBrokerConstants;
 use Spryker\Shared\Router\RouterConstants;
-use Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 
 class EventAwsSnsBrokerConfig extends AbstractBundleConfig
@@ -34,25 +33,13 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @api
      *
-     * @phpstan-return array<int, string>
-     *
-     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
-     *
-     * @return string[]
+     * @return string[]|int[]
      */
     public function getAwsSnsEventBusNames(): array
     {
         $topicNameEventBusNameMap = $this->get(EventAwsSnsBrokerConstants::AWS_SNS_BUS_NAMES_TOPIC_ARN, []);
 
-        $eventBusNames = array_keys($topicNameEventBusNameMap);
-
-        foreach ($eventBusNames as $eventBusName) {
-            if (is_numeric($eventBusName)) {
-                throw new EventBusNameConfigException();
-            }
-        }
-
-        return $eventBusNames;
+        return array_keys($topicNameEventBusNameMap);
     }
 
     /**

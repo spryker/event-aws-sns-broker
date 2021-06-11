@@ -17,8 +17,6 @@ interface EventAwsSnsBrokerFacadeInterface
      *
      * @api
      *
-     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
-     *
      * @return void
      */
     public function createTopics(): void;
@@ -29,8 +27,6 @@ interface EventAwsSnsBrokerFacadeInterface
      * - Subscriber - this is action of the handler controller that receive events from the AWS SNS broker.
      *
      * @api
-     *
-     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */

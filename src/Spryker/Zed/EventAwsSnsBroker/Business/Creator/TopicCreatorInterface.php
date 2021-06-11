@@ -5,14 +5,14 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\Subscriber;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Creator;
 
-interface SubscriberCreatorInterface
+interface TopicCreatorInterface
 {
     /**
-     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
      *
      * @return void
      */
-    public function createSubscribers(): void;
+    public function createTopics(): void;
 }

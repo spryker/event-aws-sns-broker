@@ -5,9 +5,10 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\Topic;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Creator;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class TopicCreator implements TopicCreatorInterface
@@ -35,11 +36,22 @@ class TopicCreator implements TopicCreatorInterface
     }
 
     /**
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\EventBusNameConfigException
+     *
      * @return void
      */
     public function createTopics(): void
     {
-        foreach ($this->eventAwsSnsBrokerConfig->getAwsSnsEventBusNames() as $eventBusName) {
+        $eventBusNames = $this->eventAwsSnsBrokerConfig->getAwsSnsEventBusNames();
+
+        foreach ($eventBusNames as $eventBusName) {
+            if (is_numeric($eventBusName)) {
+                throw new EventBusNameConfigException();
+            }
+        }
+
+        /** @var string $eventBusName */
+        foreach ($eventBusNames as $eventBusName) {
             $this->eventAwsSnsBrokerClient->createTopic($eventBusName);
         }
     }

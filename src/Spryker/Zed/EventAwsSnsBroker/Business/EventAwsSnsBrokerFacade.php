@@ -20,8 +20,6 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      *
      * @api
      *
-     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
-     *
      * @return void
      */
     public function createTopics(): void
@@ -35,8 +33,6 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      * {@inheritDoc}
      *
      * @api
-     *
-     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
      *
      * @return void
      */
