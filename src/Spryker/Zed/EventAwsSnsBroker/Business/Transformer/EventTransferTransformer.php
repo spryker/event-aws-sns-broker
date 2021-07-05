@@ -11,6 +11,7 @@ use Exception;
 use Generated\Shared\Transfer\EventTransfer;
 use RuntimeException;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface;
+use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class EventTransferTransformer implements EventTransferTransformerInterface
 {
@@ -20,11 +21,20 @@ class EventTransferTransformer implements EventTransferTransformerInterface
     protected $utilEncodingService;
 
     /**
-     * @param \Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService
+     * @var \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig
      */
-    public function __construct(EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService)
-    {
+    protected $eventAwsSnsBrokerConfig;
+
+    /**
+     * @param \Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService
+     * @param \Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
+     */
+    public function __construct(
+        EventAwsSnsBrokerToUtilEncodingServiceInterface $utilEncodingService,
+        EventAwsSnsBrokerConfig $eventAwsSnsBrokerConfig
+    ) {
         $this->utilEncodingService = $utilEncodingService;
+        $this->eventAwsSnsBrokerConfig = $eventAwsSnsBrokerConfig;
     }
 
     /**
@@ -65,7 +75,13 @@ class EventTransferTransformer implements EventTransferTransformerInterface
 
         $eventTransfer = (new EventTransfer())->fromArray($eventTransferData);
 
-        $messageTransferClass = $eventTransfer->getMessageTypeOrFail();
+        $messageTransferClass = $this->eventAwsSnsBrokerConfig
+                ->getMessageTransferClassesMappedWithEventName()[$eventTransfer->getEventName()] ?? null;
+
+        if ($messageTransferClass === null) {
+            return $eventTransfer;
+        }
+
         /** @var \Spryker\Shared\Kernel\Transfer\TransferInterface $messageTransfer */
         $messageTransfer = new $messageTransferClass();
         $messageTransfer->fromArray($messageData);

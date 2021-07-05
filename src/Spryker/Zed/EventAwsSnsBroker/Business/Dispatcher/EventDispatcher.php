@@ -5,13 +5,13 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\Processor;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
 use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface;
 
-class EventProcessor implements EventProcessorInterface
+class EventDispatcher implements EventDispatcherInterface
 {
     /**
      * @var \Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformerInterface
@@ -41,7 +41,7 @@ class EventProcessor implements EventProcessorInterface
      *
      * @return void
      */
-    public function handleEvent(string $eventMessage, string $eventBusName): void
+    public function dispatchEvent(string $eventMessage, string $eventBusName): void
     {
         $this->eventAwsSnsBrokerToEventFacade
             ->dispatch(

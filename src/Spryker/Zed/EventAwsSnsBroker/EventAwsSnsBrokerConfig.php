@@ -16,6 +16,24 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
 {
     /**
      * Specification:
+     * - Returns mapped classes of message transfers with event names.
+     *
+     * @api
+     *
+     * @example
+     * [
+     *  'payment/successful' => OrderPaymentEventTransfer::class,
+     * ]
+     *
+     * @return string[]
+     */
+    public function getMessageTransferClassesMappedWithEventName(): array
+    {
+        return [];
+    }
+
+    /**
+     * Specification:
      * - Returns map of topic ARNs with event bus names registered in the config.
      *
      * @api

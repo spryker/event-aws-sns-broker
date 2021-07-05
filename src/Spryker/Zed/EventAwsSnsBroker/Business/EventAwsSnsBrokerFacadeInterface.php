@@ -48,7 +48,7 @@ interface EventAwsSnsBrokerFacadeInterface
 
     /**
      * Specification:
-     * - Handles an received event from AWS SNS through HTTP(S).
+     * - Process an received event from AWS SNS through HTTP(S).
      *
      * @api
      *
@@ -57,19 +57,5 @@ interface EventAwsSnsBrokerFacadeInterface
      *
      * @return void
      */
-    public function handleEvent(string $eventMessage, string $eventBusName): void;
-
-    /**
-     * Specification:
-     * - Checks request's data to be sure request is correct and contains needed and allowed data.
-     *
-     * @api
-     *
-     * @param mixed[] $requestBody
-     * @param mixed[] $requestHeaders
-     * @param string $eventBusName
-     *
-     * @return bool
-     */
-    public function isEventNotificationCorrect(array $requestBody, array $requestHeaders, string $eventBusName): bool;
+    public function dispatchEvent(string $eventMessage, string $eventBusName): void;
 }

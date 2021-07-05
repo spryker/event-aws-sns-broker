@@ -5,9 +5,9 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Zed\EventAwsSnsBroker\Business\Processor;
+namespace Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher;
 
-interface EventProcessorInterface
+interface EventDispatcherInterface
 {
     /**
      * @param string $eventMessage
@@ -15,5 +15,5 @@ interface EventProcessorInterface
      *
      * @return void
      */
-    public function handleEvent(string $eventMessage, string $eventBusName): void;
+    public function dispatchEvent(string $eventMessage, string $eventBusName): void;
 }

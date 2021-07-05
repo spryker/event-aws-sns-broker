@@ -71,28 +71,10 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
      *
      * @return void
      */
-    public function handleEvent(string $eventMessage, string $eventBusName): void
+    public function dispatchEvent(string $eventMessage, string $eventBusName): void
     {
         $this->getFactory()
-            ->createEventProcessor()
-            ->handleEvent($eventMessage, $eventBusName);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @api
-     *
-     * @param mixed[] $requestBody
-     * @param mixed[] $requestHeaders
-     * @param string $eventBusName
-     *
-     * @return bool
-     */
-    public function isEventNotificationCorrect(array $requestBody, array $requestHeaders, string $eventBusName): bool
-    {
-        return $this->getFactory()
-            ->createEventNotificationChecker()
-            ->isEventNotificationCorrect($requestBody, $requestHeaders, $eventBusName);
+            ->createEventDispatcher()
+            ->dispatchEvent($eventMessage, $eventBusName);
     }
 }

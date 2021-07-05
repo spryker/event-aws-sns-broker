@@ -8,14 +8,11 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\Checker\EventNotificationChecker;
-use Spryker\Zed\EventAwsSnsBroker\Business\Checker\EventNotificationCheckerInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\SubscriberCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\SubscriberCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\TopicCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\TopicCreatorInterface;
-use Spryker\Zed\EventAwsSnsBroker\Business\Processor\EventProcessor;
-use Spryker\Zed\EventAwsSnsBroker\Business\Processor\EventProcessorInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher\EventDispatcher;
 use Spryker\Zed\EventAwsSnsBroker\Business\Publisher\EventPublisher;
 use Spryker\Zed\EventAwsSnsBroker\Business\Publisher\EventPublisherInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformer;
@@ -31,11 +28,11 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
 {
     /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Processor\EventProcessorInterface
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher\EventDispatcherInterface
      */
-    public function createEventProcessor(): EventProcessorInterface
+    public function createEventDispatcher(): EventDispatcher
     {
-        return new EventProcessor(
+        return new EventDispatcher(
             $this->createEventTransferTransformer(),
             $this->getEventFacade()
         );
@@ -80,7 +77,10 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
      */
     public function createEventTransferTransformer(): EventTransferTransformerInterface
     {
-        return new EventTransferTransformer($this->getUtilEncodingService());
+        return new EventTransferTransformer(
+            $this->getUtilEncodingService(),
+            $this->getConfig()
+        );
     }
 
     /**
@@ -89,14 +89,6 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     public function getUtilEncodingService(): EventAwsSnsBrokerToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(EventAwsSnsBrokerDependencyProvider::SERVICE_UTIL_ENCODING);
-    }
-
-    /**
-     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Checker\EventNotificationCheckerInterface
-     */
-    public function createEventNotificationChecker(): EventNotificationCheckerInterface
-    {
-        return new EventNotificationChecker();
     }
 
     /**
