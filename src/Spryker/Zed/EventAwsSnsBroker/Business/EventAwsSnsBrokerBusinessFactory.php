@@ -13,6 +13,7 @@ use Spryker\Zed\EventAwsSnsBroker\Business\Creator\SubscriberCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\TopicCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\TopicCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher\EventDispatcher;
+use Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher\EventDispatcherInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Publisher\EventPublisher;
 use Spryker\Zed\EventAwsSnsBroker\Business\Publisher\EventPublisherInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Transformer\EventTransferTransformer;
@@ -30,7 +31,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \Spryker\Zed\EventAwsSnsBroker\Business\Dispatcher\EventDispatcherInterface
      */
-    public function createEventDispatcher(): EventDispatcher
+    public function createEventDispatcher(): EventDispatcherInterface
     {
         return new EventDispatcher(
             $this->createEventTransferTransformer(),
