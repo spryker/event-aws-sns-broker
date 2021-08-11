@@ -27,7 +27,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @return string[]
      */
-    public function getMessageTransferClassesMappedWithEventName(): array
+    public function getEventNameToMessageTransferClassNameMap(): array
     {
         return [];
     }
@@ -40,7 +40,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @return string[]
      */
-    public function getAwsSnsTopicArnMappedWithEventBusNames(): array
+    public function getEventBusNameToAwsSnsTopicArnMap(): array
     {
         return $this->get(EventAwsSnsBrokerConstants::AWS_SNS_BUS_NAMES_TOPIC_ARN, []);
     }

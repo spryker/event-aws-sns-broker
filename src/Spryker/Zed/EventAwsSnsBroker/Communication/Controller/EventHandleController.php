@@ -33,7 +33,8 @@ class EventHandleController extends AbstractController
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = $this->getFactory()->getUtilEncodingService()
+        $data = $this->getFactory()
+            ->getUtilEncodingService()
             ->decodeJson($request->getContent(), true);
 
         $this->getFacade()->dispatchEvent(

@@ -9,7 +9,7 @@ namespace Spryker\Zed\EventAwsSnsBroker\Business\Transformer;
 
 use Exception;
 use Generated\Shared\Transfer\EventTransfer;
-use RuntimeException;
+use Spryker\Zed\EventAwsSnsBroker\Business\Exception\MessageNotFoundInEventPayloadException;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Service\EventAwsSnsBrokerToUtilEncodingServiceInterface;
 use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
@@ -58,7 +58,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
     /**
      * @param string $eventMessage
      *
-     * @throws \RuntimeException
+     * @throws \Spryker\Zed\EventAwsSnsBroker\Business\Exception\MessageNotFoundInEventPayloadException
      *
      * @return \Generated\Shared\Transfer\EventTransfer
      */
@@ -67,7 +67,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
         $eventTransferData = $this->utilEncodingService->decodeJson($eventMessage, true);
 
         if (!isset($eventTransferData['message'])) {
-            throw new RuntimeException('The body of the event message doesn\'t contain the \'message\' key.');
+            throw new MessageNotFoundInEventPayloadException('The event doesn\'t contain the \'message\' key.');
         }
 
         $messageData = $eventTransferData['message'];
@@ -76,7 +76,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
         $eventTransfer = (new EventTransfer())->fromArray($eventTransferData);
 
         $messageTransferClass = $this->eventAwsSnsBrokerConfig
-                ->getMessageTransferClassesMappedWithEventName()[$eventTransfer->getEventName()] ?? null;
+                ->getEventNameToMessageTransferClassNameMap()[$eventTransfer->getEventName()] ?? null;
 
         if ($messageTransferClass === null) {
             return $eventTransfer;
@@ -84,7 +84,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
 
         /** @var \Spryker\Shared\Kernel\Transfer\TransferInterface $messageTransfer */
         $messageTransfer = new $messageTransferClass();
-        $messageTransfer->fromArray($messageData);
+        $messageTransfer->fromArray($messageData, true);
 
         $eventTransfer->setMessage($messageTransfer);
 

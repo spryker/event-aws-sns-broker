@@ -78,7 +78,7 @@ class EventPublisher implements EventPublisherInterface
      */
     protected function getTopicArnByEventBusName(string $eventBusName): string
     {
-        $topicNameTopicArnMap = $this->eventAwsSnsBrokerConfig->getAwsSnsTopicArnMappedWithEventBusNames();
+        $topicNameTopicArnMap = $this->eventAwsSnsBrokerConfig->getEventBusNameToAwsSnsTopicArnMap();
 
         if (isset($topicNameTopicArnMap[$eventBusName])) {
             return $topicNameTopicArnMap[$eventBusName];
