@@ -29,7 +29,7 @@ class EventHandleController extends AbstractController
         /** @var string $eventBusName */
         $eventBusName = $request->query->get(static::QUERY_PARAM_EVENT_BUS_NAME) ?? '';
 
-        if (!is_string($request->getContent())) {
+        if (!$request->getContent()) {
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
