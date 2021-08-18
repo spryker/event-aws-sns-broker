@@ -83,7 +83,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      */
     public function getAwsSnsProtocol(): string
     {
-        return $this->getConfig()->get(RouterConstants::ZED_IS_SSL_ENABLED)
+        return $this->getConfig()->get(RouterConstants::ZED_IS_SSL_ENABLED, true)
             ? 'https'
             : 'http';
     }
