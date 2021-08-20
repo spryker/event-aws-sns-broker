@@ -1,0 +1,23 @@
+[
+    {
+        "fileName": "/vendor/spryker/spryker/Bundles/EventAwsSnsBroker/src/Spryker/Client/EventAwsSnsBroker/ApiClient/AwsSnsApiClientInterface.php",
+        "description": "\n      ClientInterface: The interface method Spryker\\Client\\EventAwsSnsBroker\\ApiClient\\AwsSnsApiClientInterface::createTopic() does not contain an @api tag or contract text which violates rule: \"Every method must also contain the @api tag in docblock and a contract text above.\"\n    ",
+        "rule": "ClientInterfaceRule",
+        "ruleset": "Spryker Client",
+        "priority": "1"
+    },
+    {
+        "fileName": "/vendor/spryker/spryker/Bundles/EventAwsSnsBroker/src/Spryker/Client/EventAwsSnsBroker/ApiClient/AwsSnsApiClientInterface.php",
+        "description": "\n      ClientInterface: The interface method Spryker\\Client\\EventAwsSnsBroker\\ApiClient\\AwsSnsApiClientInterface::createSubscriber() does not contain an @api tag or contract text which violates rule: \"Every method must also contain the @api tag in docblock and a contract text above.\"\n    ",
+        "rule": "ClientInterfaceRule",
+        "ruleset": "Spryker Client",
+        "priority": "1"
+    },
+    {
+        "fileName": "/vendor/spryker/spryker/Bundles/EventAwsSnsBroker/src/Spryker/Client/EventAwsSnsBroker/ApiClient/AwsSnsApiClientInterface.php",
+        "description": "\n      ClientInterface: The interface method Spryker\\Client\\EventAwsSnsBroker\\ApiClient\\AwsSnsApiClientInterface::publishEvent() does not contain an @api tag or contract text which violates rule: \"Every method must also contain the @api tag in docblock and a contract text above.\"\n    ",
+        "rule": "ClientInterfaceRule",
+        "ruleset": "Spryker Client",
+        "priority": "1"
+    }
+]

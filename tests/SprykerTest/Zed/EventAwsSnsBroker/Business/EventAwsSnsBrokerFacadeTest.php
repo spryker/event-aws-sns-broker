@@ -86,7 +86,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
             ->with($topicArn);
 
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
-        $this->tester->mockConfigMethod('getAwsSnsTopicArnMappedWithEventBusNames', [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]);
+        $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]);
 
         // Act
         $this->getFacade()->createSubscribers();
@@ -108,7 +108,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
             ->method('createSubscriber');
 
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
-        $this->tester->mockConfigMethod('getAwsSnsTopicArnMappedWithEventBusNames', $map);
+        $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', $map);
 
         // Act
         $this->getFacade()->createSubscribers();
@@ -134,7 +134,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
 
         $topicArn = $this->getTopicArn(static::TEST_EVENT_BUS_NAME_ONE);
         $this->tester->mockConfigMethod(
-            'getAwsSnsTopicArnMappedWithEventBusNames',
+            'getEventBusNameToAwsSnsTopicArnMap',
             [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]
         );
 
@@ -179,7 +179,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
 
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::FACADE_EVENT, $eventAwsSnsBrokerToEventFacadeBridgeMock);
         $this->tester->mockConfigMethod(
-            'getMessageTransferClassesMappedWithEventName',
+            'getEventNameToMessageTransferClassNameMap',
             [$eventName => EventEntityTransfer::class]
         );
 
