@@ -76,6 +76,28 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
 
     /**
      * @param string $topicArn
+     * @param string $token
+     *
+     * @return string
+     */
+    public function confirmSubscription(string $topicArn, string $token): string
+    {
+        $subscriptionBody = [
+            'TopicArn' => $topicArn,
+            'Token' => $token,
+        ];
+
+        $result = $this->awsSnsClient->confirmSubscription($subscriptionBody);
+
+        if (!isset($result[static::RESPONSE_SUBSCRIPTION_ARN_KEY])) {
+            $this->throwNotExistException('confirmSubscription', static::RESPONSE_SUBSCRIPTION_ARN_KEY);
+        }
+
+        return $result[static::RESPONSE_SUBSCRIPTION_ARN_KEY];
+    }
+
+    /**
+     * @param string $topicArn
      * @param string $message
      *
      * @return string

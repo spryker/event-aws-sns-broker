@@ -8,6 +8,7 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
+use Generated\Shared\Transfer\SubscriptionConfirmationTransfer;
 
 interface EventAwsSnsBrokerFacadeInterface
 {
@@ -31,6 +32,18 @@ interface EventAwsSnsBrokerFacadeInterface
      * @return void
      */
     public function createSubscribers(): void;
+
+    /**
+     * Specification:
+     * - Calls the AWS SNS client's method to confirm the subscription.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\SubscriptionConfirmationTransfer $subscriptionConfirmationTransfer
+     *
+     * @return bool
+     */
+    public function confirmSubscription(SubscriptionConfirmationTransfer $subscriptionConfirmationTransfer): bool;
 
     /**
      * Specification:

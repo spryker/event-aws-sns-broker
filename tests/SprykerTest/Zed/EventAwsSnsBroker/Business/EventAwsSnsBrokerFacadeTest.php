@@ -117,6 +117,64 @@ class EventAwsSnsBrokerFacadeTest extends Unit
     /**
      * @return void
      */
+    public function testConfirmSubscriptionsShouldBeSuccess(): void
+    {
+        // Arrange
+        $topicArn = $this->getTopicArn(static::TEST_EVENT_BUS_NAME_ONE);
+
+        $eventAwsSnsClientMock = $this->getMockBuilder(EventAwsSnsBrokerClientInterface::class)
+            ->getMock();
+        $eventAwsSnsClientMock->expects($this->once())
+            ->method('confirmSubscription')
+            ->with($topicArn);
+
+        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
+        $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]);
+
+        // Act
+        $result = $this->getFacade()->confirmSubscription(
+            [
+                'TopicArn' => $topicArn,
+                'Token' => '',
+            ]
+        );
+
+        // Assert
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConfirmSubscriptionsShouldBeFailed(): void
+    {
+        // Arrange
+        $topicArn = $this->getTopicArn(static::TEST_EVENT_BUS_NAME_ONE);
+
+        $eventAwsSnsClientMock = $this->getMockBuilder(EventAwsSnsBrokerClientInterface::class)
+            ->getMock();
+        $eventAwsSnsClientMock->expects($this->any())
+            ->method('confirmSubscription')
+            ->with($topicArn);
+
+        $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
+        $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', []);
+
+        // Act
+        $result = $this->getFacade()->confirmSubscription(
+            [
+                'TopicArn' => $topicArn,
+                'Token' => '',
+            ]
+        );
+
+        // Assert
+        $this->assertFalse($result);
+    }
+
+    /**
+     * @return void
+     */
     public function testPublishEventsShouldBeSuccess(): void
     {
         // Arrange

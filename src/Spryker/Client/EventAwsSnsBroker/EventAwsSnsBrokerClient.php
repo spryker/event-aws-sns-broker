@@ -54,6 +54,23 @@ class EventAwsSnsBrokerClient extends AbstractClient implements EventAwsSnsBroke
      * @api
      *
      * @param string $topicArn
+     * @param string $token
+     *
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
+     *
+     * @return string
+     */
+    public function confirmSubscription(string $topicArn, string $token): string
+    {
+        return $this->getFactory()->createApiClient()->confirmSubscription($topicArn, $token);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param string $topicArn
      * @param string $message
      *
      * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException

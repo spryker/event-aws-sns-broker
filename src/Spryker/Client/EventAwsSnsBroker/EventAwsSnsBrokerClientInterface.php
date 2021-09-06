@@ -41,6 +41,22 @@ interface EventAwsSnsBrokerClientInterface
 
     /**
      * Specification:
+     * - Sends a 'SubscriptionConfirmation' request to AWS.
+     * - Requests the TopicArn of the confirmed subscription.
+     *
+     * @api
+     *
+     * @param string $topicArn
+     * @param string $token
+     *
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
+     *
+     * @return string
+     */
+    public function confirmSubscription(string $topicArn, string $token): string;
+
+    /**
+     * Specification:
      * - Requests the AWS SNS API to publish event.
      *
      * @api

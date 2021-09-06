@@ -29,6 +29,7 @@ use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
 class EventAwsSnsClientTest extends Unit
 {
     protected const TEST_EVENT_BUS_NAME_ONE = 'testNameOne';
+    protected const TEST_SUBSCRIPTION_TOKEN = 'tokenP3843j2423klj423094u234kjol42j34ok';
 
     /**
      * @return void
@@ -130,6 +131,54 @@ class EventAwsSnsClientTest extends Unit
 
         // Act
         $eventAwsSnsClient->createSubscriber('', '', '');
+    }
+
+    /**
+     * @return void
+     */
+    public function testConfirmSubscriptionShouldBeSuccess(): void
+    {
+        // Arrange
+        $topicArn = 'topicArn:' . static::TEST_EVENT_BUS_NAME_ONE;
+
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\Aws\Sns\SnsClient $snsClientMock */
+        $snsClientMock = $this->getMockBuilder(SnsClient::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['confirmSubscription'])
+            ->getMock();
+        $snsClientMock->expects($this->once())
+            ->method('confirmSubscription')
+            ->willReturn(['SubscriptionArn' => $topicArn]);
+
+        $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+
+        // Act
+        $subscriberArn = $eventAwsSnsClient->confirmSubscription($topicArn, static::TEST_SUBSCRIPTION_TOKEN);
+
+        // Assert
+        $this->assertEquals($topicArn, $subscriberArn);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConfirmSubscriptionShouldBeFailedResponse(): void
+    {
+        // Arrange
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\Aws\Sns\SnsClient $snsClientMock */
+        $snsClientMock = $this->getMockBuilder(SnsClient::class)
+            ->disableOriginalConstructor()
+            ->addMethods(['confirmSubscription'])
+            ->getMock();
+        $snsClientMock->expects($this->once())
+            ->method('confirmSubscription')
+            ->willReturn([]);
+
+        $eventAwsSnsClient = $this->getEventAwsSnsBrokerClient($snsClientMock);
+        $this->expectException(AwsSnsClientResponseException::class);
+
+        // Act
+        $eventAwsSnsClient->confirmSubscription('', '');
     }
 
     /**

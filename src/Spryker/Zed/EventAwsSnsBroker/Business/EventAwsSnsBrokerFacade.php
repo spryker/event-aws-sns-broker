@@ -8,6 +8,7 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Generated\Shared\Transfer\EventCollectionTransfer;
+use Generated\Shared\Transfer\SubscriptionConfirmationTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -41,6 +42,22 @@ class EventAwsSnsBrokerFacade extends AbstractFacade implements EventAwsSnsBroke
         $this->getFactory()
             ->createSubscriberCreator()
             ->createSubscribers();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\SubscriptionConfirmationTransfer $subscriptionConfirmationTransfer
+     *
+     * @return bool
+     */
+    public function confirmSubscription(SubscriptionConfirmationTransfer $subscriptionConfirmationTransfer): bool
+    {
+        return $this->getFactory()
+            ->createSubscriptionConfirmator()
+            ->confirmSubscription($subscriptionConfirmationTransfer);
     }
 
     /**

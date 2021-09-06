@@ -11,4 +11,9 @@
         <property name="eventBusName" type="string"/>
     </transfer>
 
+    <transfer name="SubscriptionConfirmation">
+        <property name="topicArn" type="string"/>
+        <property name="token" type="string"/>
+    </transfer>
+
 </transfers>

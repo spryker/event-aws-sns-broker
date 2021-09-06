@@ -7,6 +7,7 @@
 
 namespace Spryker\Zed\EventAwsSnsBroker\Communication\Controller;
 
+use Generated\Shared\Transfer\SubscriptionConfirmationTransfer;
 use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,9 @@ class EventHandleController extends AbstractController
 {
     public const QUERY_PARAM_EVENT_BUS_NAME = 'event-bus-name';
 
+    protected const AWS_SNS_REQUEST_TYPE_FIELD = 'Type';
+    protected const AWS_SNS_REQUEST_TYPE_SUBSCRIPTION_CONFIRMATION = 'SubscriptionConfirmation';
+
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -26,22 +30,55 @@ class EventHandleController extends AbstractController
      */
     public function indexAction(Request $request): Response
     {
-        /** @var string $eventBusName */
-        $eventBusName = $request->query->get(static::QUERY_PARAM_EVENT_BUS_NAME) ?? '';
-
         if (!$request->getContent()) {
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
-        $data = $this->getFactory()
+        $requestData = $this->getFactory()
             ->getUtilEncodingService()
             ->decodeJson($request->getContent(), true);
 
+        if (
+            isset($requestData[static::AWS_SNS_REQUEST_TYPE_FIELD])
+            && $requestData[static::AWS_SNS_REQUEST_TYPE_FIELD] === static::AWS_SNS_REQUEST_TYPE_SUBSCRIPTION_CONFIRMATION
+        ) {
+            return $this->handleSubscriptionConfirmation($requestData);
+        }
+
+        return $this->handleEventMessage($request, $requestData);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param array $requestData
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function handleEventMessage(Request $request, array $requestData): Response
+    {
+        /** @var string $eventBusName */
+        $eventBusName = $request->query->get(static::QUERY_PARAM_EVENT_BUS_NAME) ?? '';
+
         $this->getFacade()->dispatchEvent(
-            $data['Message'],
+            $requestData['Message'],
             $eventBusName
         );
 
-        return new Response('', Response::HTTP_CREATED);
+        return new Response('The event is processed.', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @param array $requestData
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function handleSubscriptionConfirmation(array $requestData): Response
+    {
+        $subscriptionConfirmationTransfer = (new SubscriptionConfirmationTransfer())->fromArray($requestData, true);
+        $result = $this->getFacade()->confirmSubscription($subscriptionConfirmationTransfer);
+
+        return $result
+            ? new Response('The subscription is confirmed.', Response::HTTP_OK)
+            : new Response('The subscription is not confirmed.', Response::HTTP_BAD_REQUEST);
     }
 }

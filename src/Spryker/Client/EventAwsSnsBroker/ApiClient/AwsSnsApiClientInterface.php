@@ -31,6 +31,16 @@ interface AwsSnsApiClientInterface
 
     /**
      * @param string $topicArn
+     * @param string $token
+     *
+     * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException
+     *
+     * @return string
+     */
+    public function confirmSubscription(string $topicArn, string $token): string;
+
+    /**
+     * @param string $topicArn
      * @param string $message
      *
      * @throws \Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException

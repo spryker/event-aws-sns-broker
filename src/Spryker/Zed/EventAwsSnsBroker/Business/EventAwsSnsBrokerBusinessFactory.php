@@ -8,6 +8,8 @@
 namespace Spryker\Zed\EventAwsSnsBroker\Business;
 
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
+use Spryker\Zed\EventAwsSnsBroker\Business\Confirmator\SubscriptionConfirmator;
+use Spryker\Zed\EventAwsSnsBroker\Business\Confirmator\SubscriptionConfirmatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\SubscriberCreator;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\SubscriberCreatorInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\Creator\TopicCreator;
@@ -45,6 +47,17 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     public function createTopicCreator(): TopicCreatorInterface
     {
         return new TopicCreator(
+            $this->getEventAwsSnsBrokerClient(),
+            $this->getConfig()
+        );
+    }
+
+    /**
+     * @return \Spryker\Zed\EventAwsSnsBroker\Business\Confirmator\SubscriptionConfirmatorInterface
+     */
+    public function createSubscriptionConfirmator(): SubscriptionConfirmatorInterface
+    {
+        return new SubscriptionConfirmator(
             $this->getEventAwsSnsBrokerClient(),
             $this->getConfig()
         );
