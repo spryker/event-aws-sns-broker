@@ -13,7 +13,14 @@ use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerConfig;
 
 class SubscriptionConfirmator implements SubscriptionConfirmatorInterface
 {
+    /**
+     * @var string
+     */
     protected const REQUEST_TOPIC_ARN_FIELD = 'TopicArn';
+
+    /**
+     * @var string
+     */
     protected const REQUEST_TOKEN_FIELD = 'Token';
 
     /**

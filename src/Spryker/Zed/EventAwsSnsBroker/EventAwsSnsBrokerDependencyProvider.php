@@ -17,8 +17,19 @@ use Spryker\Zed\Kernel\Container;
  */
 class EventAwsSnsBrokerDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const CLIENT_EVENT_AWS_SNS_BROKER = 'CLIENT_EVENT_AWS_SNS_BROKER';
+
+    /**
+     * @var string
+     */
     public const FACADE_EVENT = 'FACADE_EVENT';
+
+    /**
+     * @var string
+     */
     public const SERVICE_UTIL_ENCODING = 'SERVICE_UTIL_ENCODING';
 
     /**

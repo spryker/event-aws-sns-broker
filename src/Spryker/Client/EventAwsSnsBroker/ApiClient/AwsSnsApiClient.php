@@ -12,8 +12,19 @@ use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
 
 class AwsSnsApiClient implements AwsSnsApiClientInterface
 {
+    /**
+     * @var string
+     */
     protected const RESPONSE_TOPIC_ARN_KEY = 'TopicArn';
+
+    /**
+     * @var string
+     */
     protected const RESPONSE_SUBSCRIPTION_ARN_KEY = 'SubscriptionArn';
+
+    /**
+     * @var string
+     */
     protected const RESPONSE_MESSAGE_ID_KEY = 'MessageId';
 
     /**

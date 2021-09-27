@@ -32,7 +32,14 @@ use Spryker\Zed\EventAwsSnsBroker\EventAwsSnsBrokerDependencyProvider;
  */
 class EventAwsSnsBrokerFacadeTest extends Unit
 {
+    /**
+     * @var string
+     */
     protected const TEST_EVENT_BUS_NAME_ONE = 'testNameOne';
+
+    /**
+     * @var string
+     */
     protected const TEST_EVENT_BUS_NAME_TWO = 'testNameTwo';
 
     /**

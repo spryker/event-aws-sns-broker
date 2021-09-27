@@ -17,7 +17,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class EventAwsSnsBrokerCreateTopicsConsole extends Console
 {
+    /**
+     * @var string
+     */
     protected const COMMAND_NAME = 'event-broker:aws-sns:create-topics';
+
+    /**
+     * @var string
+     */
     protected const COMMAND_DESCRIPTION = 'This command creates topics based on event bus names from config.';
 
     /**

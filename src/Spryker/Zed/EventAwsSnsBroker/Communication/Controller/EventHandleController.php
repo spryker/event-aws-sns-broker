@@ -18,9 +18,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class EventHandleController extends AbstractController
 {
+    /**
+     * @var string
+     */
     public const QUERY_PARAM_EVENT_BUS_NAME = 'event-bus-name';
 
+    /**
+     * @var string
+     */
     protected const AWS_SNS_REQUEST_TYPE_FIELD = 'Type';
+
+    /**
+     * @var string
+     */
     protected const AWS_SNS_REQUEST_TYPE_SUBSCRIPTION_CONFIRMATION = 'SubscriptionConfirmation';
 
     /**

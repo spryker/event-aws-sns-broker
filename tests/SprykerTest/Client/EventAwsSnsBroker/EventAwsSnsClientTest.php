@@ -28,7 +28,14 @@ use Spryker\Client\EventAwsSnsBroker\Exception\AwsSnsClientResponseException;
  */
 class EventAwsSnsClientTest extends Unit
 {
+    /**
+     * @var string
+     */
     protected const TEST_EVENT_BUS_NAME_ONE = 'testNameOne';
+
+    /**
+     * @var string
+     */
     protected const TEST_SUBSCRIPTION_TOKEN = 'tokenP3843j2423klj423094u234kjol42j34ok';
 
     /**

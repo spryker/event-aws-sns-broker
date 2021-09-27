@@ -17,7 +17,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class EventAwsSnsBrokerCreateSubscribersConsole extends Console
 {
+    /**
+     * @var string
+     */
     protected const COMMAND_NAME = 'event-broker:aws-sns:create-subscribers';
+
+    /**
+     * @var string
+     */
     protected const COMMAND_DESCRIPTION = 'This command creates subscribers basing on event bus names from config.';
 
     /**
