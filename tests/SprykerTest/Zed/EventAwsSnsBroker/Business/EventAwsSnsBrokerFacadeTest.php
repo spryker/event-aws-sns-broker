@@ -12,6 +12,7 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\EventCollectionTransfer;
 use Generated\Shared\Transfer\EventEntityTransfer;
 use Generated\Shared\Transfer\EventTransfer;
+use Generated\Shared\Transfer\SubscriptionConfirmationTransfer;
 use Spryker\Client\EventAwsSnsBroker\EventAwsSnsBrokerClientInterface;
 use Spryker\Zed\EventAwsSnsBroker\Business\EventAwsSnsBrokerFacadeInterface;
 use Spryker\Zed\EventAwsSnsBroker\Dependency\Facade\EventAwsSnsBrokerToEventFacadeInterface;
@@ -137,14 +138,12 @@ class EventAwsSnsBrokerFacadeTest extends Unit
 
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
         $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]);
+        $subscriptionConfirmationTransfer = (new SubscriptionConfirmationTransfer)
+            ->setTopicArn($topicArn)
+            ->setToken('');
 
         // Act
-        $result = $this->getFacade()->confirmSubscription(
-            [
-                'TopicArn' => $topicArn,
-                'Token' => '',
-            ]
-        );
+        $result = $this->getFacade()->confirmSubscription($subscriptionConfirmationTransfer);
 
         // Assert
         $this->assertTrue($result);
@@ -166,14 +165,12 @@ class EventAwsSnsBrokerFacadeTest extends Unit
 
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::CLIENT_EVENT_AWS_SNS_BROKER, $eventAwsSnsClientMock);
         $this->tester->mockConfigMethod('getEventBusNameToAwsSnsTopicArnMap', []);
+        $subscriptionConfirmationTransfer = (new SubscriptionConfirmationTransfer)
+            ->setTopicArn($topicArn)
+            ->setToken('');
 
         // Act
-        $result = $this->getFacade()->confirmSubscription(
-            [
-                'TopicArn' => $topicArn,
-                'Token' => '',
-            ]
-        );
+        $result = $this->getFacade()->confirmSubscription($subscriptionConfirmationTransfer);
 
         // Assert
         $this->assertFalse($result);
