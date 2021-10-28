@@ -5,7 +5,7 @@
     "license": "proprietary",
     "require": {
         "aws/aws-sdk-php": "^3.4.0",
-        "php": ">=7.3",
+        "php": ">=7.4",
         "spryker/application": "^3.2.0",
         "spryker/error-handler": "^2.1.0",
         "spryker/event": "dev-beta/app-store-demo",
