@@ -25,7 +25,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *  'payment/successful' => OrderPaymentEventTransfer::class,
      * ]
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getEventNameToMessageTransferClassNameMap(): array
     {
@@ -38,7 +38,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @api
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getEventBusNameToAwsSnsTopicArnMap(): array
     {
@@ -51,7 +51,7 @@ class EventAwsSnsBrokerConfig extends AbstractBundleConfig
      *
      * @api
      *
-     * @return string[]|int[]
+     * @return array<string>|array<int>
      */
     public function getAwsSnsEventBusNames(): array
     {

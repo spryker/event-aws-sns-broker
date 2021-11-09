@@ -61,7 +61,7 @@ class EventPublisher implements EventPublisherInterface
                 $this->eventAwsSnsBrokerClient
                     ->publishEvent(
                         $topicArn,
-                        $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer)
+                        $this->eventTransferTransformer->transformEventTransferIntoMessage($eventTransfer),
                     );
             } catch (AwsSnsClientResponseException $exception) {
                 ErrorLogger::getInstance()->log($exception);

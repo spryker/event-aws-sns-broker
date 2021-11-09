@@ -37,7 +37,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     {
         return new EventDispatcher(
             $this->createEventTransferTransformer(),
-            $this->getEventFacade()
+            $this->getEventFacade(),
         );
     }
 
@@ -48,7 +48,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     {
         return new TopicCreator(
             $this->getEventAwsSnsBrokerClient(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -59,7 +59,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     {
         return new SubscriptionConfirmator(
             $this->getEventAwsSnsBrokerClient(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -70,7 +70,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     {
         return new SubscriberCreator(
             $this->getEventAwsSnsBrokerClient(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -82,7 +82,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
         return new EventPublisher(
             $this->getEventAwsSnsBrokerClient(),
             $this->createEventTransferTransformer(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -93,7 +93,7 @@ class EventAwsSnsBrokerBusinessFactory extends AbstractBusinessFactory
     {
         return new EventTransferTransformer(
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 

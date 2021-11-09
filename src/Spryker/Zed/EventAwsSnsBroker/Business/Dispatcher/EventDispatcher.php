@@ -45,7 +45,7 @@ class EventDispatcher implements EventDispatcherInterface
     {
         $this->eventAwsSnsBrokerToEventFacade
             ->dispatch(
-                $this->prepareEventCollectionTransfer($eventMessage, $eventBusName)
+                $this->prepareEventCollectionTransfer($eventMessage, $eventBusName),
             );
     }
 

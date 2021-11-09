@@ -197,7 +197,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
         $topicArn = $this->getTopicArn(static::TEST_EVENT_BUS_NAME_ONE);
         $this->tester->mockConfigMethod(
             'getEventBusNameToAwsSnsTopicArnMap',
-            [static::TEST_EVENT_BUS_NAME_ONE => $topicArn]
+            [static::TEST_EVENT_BUS_NAME_ONE => $topicArn],
         );
 
         $eventAwsSnsClientMock = $this->getMockBuilder(EventAwsSnsBrokerClientInterface::class)
@@ -242,7 +242,7 @@ class EventAwsSnsBrokerFacadeTest extends Unit
         $this->tester->setDependency(EventAwsSnsBrokerDependencyProvider::FACADE_EVENT, $eventAwsSnsBrokerToEventFacadeBridgeMock);
         $this->tester->mockConfigMethod(
             'getEventNameToMessageTransferClassNameMap',
-            [$eventName => EventEntityTransfer::class]
+            [$eventName => EventEntityTransfer::class],
         );
 
         $encodedMessage = json_encode($eventTransfer->toArray());

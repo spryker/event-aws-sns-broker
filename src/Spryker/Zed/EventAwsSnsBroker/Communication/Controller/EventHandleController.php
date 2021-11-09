@@ -71,7 +71,7 @@ class EventHandleController extends AbstractController
 
         $this->getFacade()->dispatchEvent(
             $requestData['Message'],
-            $eventBusName
+            $eventBusName,
         );
 
         return new Response('The event is processed.', Response::HTTP_CREATED);

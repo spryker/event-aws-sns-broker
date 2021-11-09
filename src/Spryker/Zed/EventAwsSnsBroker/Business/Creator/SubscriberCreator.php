@@ -45,7 +45,7 @@ class SubscriberCreator implements SubscriberCreatorInterface
             $this->eventAwsSnsBrokerClient->createSubscriber(
                 $topicArn,
                 $this->getSubscriberEndpointByBusName($eventBusName),
-                $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol()
+                $this->eventAwsSnsBrokerConfig->getAwsSnsProtocol(),
             );
         }
     }

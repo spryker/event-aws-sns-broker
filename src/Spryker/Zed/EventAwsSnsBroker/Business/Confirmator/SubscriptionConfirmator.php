@@ -61,7 +61,7 @@ class SubscriptionConfirmator implements SubscriptionConfirmatorInterface
         $this->eventAwsSnsBrokerClient
             ->confirmSubscription(
                 $subscriptionConfirmationTransfer->getTopicArnOrFail(),
-                $subscriptionConfirmationTransfer->getTokenOrFail()
+                $subscriptionConfirmationTransfer->getTokenOrFail(),
             );
 
         return true;

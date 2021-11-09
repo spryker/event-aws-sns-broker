@@ -141,7 +141,7 @@ class AwsSnsApiClient implements AwsSnsApiClientInterface
         throw new AwsSnsClientResponseException(sprintf(
             "The response of the '%s' request doesn't contain the '%s' key.",
             $methodName,
-            $notExistedKeyName
+            $notExistedKeyName,
         ));
     }
 }
