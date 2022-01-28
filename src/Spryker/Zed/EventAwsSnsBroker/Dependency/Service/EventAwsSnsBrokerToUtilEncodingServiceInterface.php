@@ -26,5 +26,5 @@ interface EventAwsSnsBrokerToUtilEncodingServiceInterface
      *
      * @return string|null
      */
-    public function encodeJson($value, $options = null, $depth = null): ?string;
+    public function encodeJson($value, ?int $options = null, ?int $depth = null): ?string;
 }
