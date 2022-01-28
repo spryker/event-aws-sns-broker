@@ -20,11 +20,11 @@ interface EventAwsSnsBrokerToUtilEncodingServiceInterface
     public function decodeJson(string $jsonValue, bool $assoc = false, ?int $depth = null, ?int $options = null): ?array;
 
     /**
-     * @param mixed $value
+     * @param array $value
      * @param int|null $options
      * @param int|null $depth
      *
      * @return string|null
      */
-    public function encodeJson($value, ?int $options = null, ?int $depth = null): ?string;
+    public function encodeJson(array $value, ?int $options = null, ?int $depth = null): ?string;
 }
