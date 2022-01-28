@@ -15,9 +15,9 @@ interface EventAwsSnsBrokerToUtilEncodingServiceInterface
      * @param int|null $depth
      * @param int|null $options
      *
-     * @return mixed|null
+     * @return array|null
      */
-    public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null);
+    public function decodeJson(string $jsonValue, bool $assoc = false, ?int $depth = null, ?int $options = null): ?array;
 
     /**
      * @param mixed $value
