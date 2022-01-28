@@ -28,9 +28,9 @@ class EventAwsSnsBrokerToUtilEncodingServiceBridge implements EventAwsSnsBrokerT
      * @param int|null $depth
      * @param int|null $options
      *
-     * @return array|null
+     * @return array
      */
-    public function decodeJson(string $jsonValue, bool $assoc = false, ?int $depth = null, ?int $options = null): ?array
+    public function decodeJson(string $jsonValue, bool $assoc = false, ?int $depth = null, ?int $options = null): array
     {
         if ($assoc === false) {
             trigger_error(
@@ -38,8 +38,14 @@ class EventAwsSnsBrokerToUtilEncodingServiceBridge implements EventAwsSnsBrokerT
                 E_USER_DEPRECATED
             );
         }
- 
-        return $this->utilEncodingService->decodeJson($jsonValue, $assoc, $depth, $options);
+
+        /** @var array|null $result */
+        $result = $this->utilEncodingService->decodeJson($jsonValue, $assoc, $depth, $options);
+        if ($result === null) {
+            throw new InvalidArgumentException('Null returned, invalid value given.');
+        }
+
+        return $result;
     }
 
     /**
