@@ -44,9 +44,9 @@ class EventHandleController extends AbstractController
             return new Response('Resource is unexpected.', Response::HTTP_BAD_REQUEST);
         }
 
-        $requestData = $this->getFactory()
+        $requestData = (array)$this->getFactory()
             ->getUtilEncodingService()
-            ->decodeJson($request->getContent(), true);
+            ->decodeJson((string)$request->getContent(), true);
 
         if (
             isset($requestData[static::AWS_SNS_REQUEST_TYPE_FIELD])

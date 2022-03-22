@@ -64,7 +64,7 @@ class EventTransferTransformer implements EventTransferTransformerInterface
      */
     public function transformMessageIntoEventTransfer(string $eventMessage): EventTransfer
     {
-        $eventTransferData = $this->utilEncodingService->decodeJson($eventMessage, true);
+        $eventTransferData = (array)$this->utilEncodingService->decodeJson($eventMessage, true);
 
         if (!isset($eventTransferData['message'])) {
             throw new MessageNotFoundInEventPayloadException('The event doesn\'t contain the \'message\' key.');
